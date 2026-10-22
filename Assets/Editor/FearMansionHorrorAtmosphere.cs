@@ -30,7 +30,8 @@ public static class FearMansionHorrorAtmosphere
         sky.SetColor("_Clouds",new Color(.22f,.26f,.35f));
         EditorUtility.SetDirty(sky);
         Undo.RecordObject(Unsupported.GetRenderSettings(),"Aplicar noche de terror");
-        RenderSettings.skybox=sky;
+        var allSky=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/Cielo_AllSky_Terror.mat");
+        RenderSettings.skybox=allSky!=null?allSky:sky;
         RenderSettings.fog=true;
         RenderSettings.fogMode=FogMode.ExponentialSquared;
         RenderSettings.fogColor=new Color(.035f,.05f,.075f);
@@ -129,6 +130,56 @@ public static class FearMansionHorrorAtmosphere
             sceneView.Repaint();
         }
         Debug.Log("Ambiente de terror verificado: cielo nocturno con luna y nubes, niebla fria, luz lunar tenue, sombras y luces calidas en la casa. Sin destellos ni cambios de camara.");
+    }
+    [MenuItem("Tools/Fear Mansion/Apply AllSky Horror Sky %#&F6")]
+    public static void ApplyAllSky()
+    {
+        if(EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Sal de Play para cambiar el cielo.");
+        var scene=EditorSceneManager.GetActiveScene();
+        if(scene.path!="Assets/Scenes/SampleScene.unity")
+            throw new InvalidOperationException("Abre SampleScene antes de integrar AllSky.");
+        var source=AssetDatabase.LoadAssetAtPath<Material>("Assets/AllSkyFree/Night MoonBurst/Night Moon Burst.mat");
+        if(source==null || !source.shader.isSupported)
+            throw new InvalidOperationException("Importa AllSky Free con el cielo Night MoonBurst.");
+        foreach(var face in new[]{"_FrontTex","_BackTex","_LeftTex","_RightTex","_UpTex","_DownTex"})
+            if(source.GetTexture(face)==null) throw new InvalidOperationException("Falta una textura del cielo: "+face);
+        System.IO.Directory.CreateDirectory("Logs");
+        EditorSceneManager.SaveScene(scene,"Logs/Antes_AllSky.unity",true);
+        EnsureFolder(Folder);
+        var sky=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/Cielo_AllSky_Terror.mat");
+        if(sky==null) {
+            sky=new Material(source){name="Cielo_AllSky_Terror"};
+            AssetDatabase.CreateAsset(sky,Folder+"/Cielo_AllSky_Terror.mat");
+        }
+        sky.shader=Shader.Find("Skybox/6 Sided");
+        if(sky.shader==null || !sky.shader.isSupported)
+            throw new InvalidOperationException("No esta disponible el shader Skybox/6 Sided.");
+        sky.SetColor("_Tint",new Color(.48f,.49f,.52f));
+        sky.SetFloat("_Exposure",1.15f);
+        sky.SetFloat("_Rotation",20f);
+        EditorUtility.SetDirty(sky);
+        Undo.RecordObject(Unsupported.GetRenderSettings(),"Integrar cielo AllSky");
+        RenderSettings.skybox=sky;
+        // Keep the existing ambient light and fog so changing the backdrop does not darken the player.
+        foreach(var camera in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)) {
+            Undo.RecordObject(camera,"Mostrar AllSky");
+            camera.clearFlags=CameraClearFlags.Skybox;
+        }
+        if(SceneView.lastActiveSceneView!=null) {
+            SceneView.lastActiveSceneView.sceneViewState.showSkybox=true;
+            SceneView.lastActiveSceneView.Repaint();
+        }
+        DynamicGI.UpdateEnvironment();
+        AssetDatabase.SaveAssets();
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        RenderPreview();
+        System.IO.File.WriteAllText("Logs/AllSky_Integracion.txt",
+            "OK: Night MoonBurst; Shader="+sky.shader.name+"; Faces=6; Exposure="+sky.GetFloat("_Exposure")+
+            "; Fog="+RenderSettings.fog+"; Ambient="+RenderSettings.ambientMode+
+            "; Camera="+(Camera.main!=null?Camera.main.name:"missing"));
+        Debug.Log("AllSky integrado: Night MoonBurst, nubes oscuras y luna. Escena guardada.");
     }
     [MenuItem("Tools/Fear Mansion/Render Horror Preview %#&F11")]
     static void RenderPreview() {

@@ -23,6 +23,7 @@ debe obtenerlos e importarlos desde su cuenta de Unity, conforme a sus licencias
 | [Low Poly Environment - Nature Free, de Polytope Studio](https://assetstore.unity.com/packages/3d/environments/low-poly-environment-nature-free-lowpoly-medieval-fantasy-series-187052) | 1.1.2 | `Assets/Polytope Studio/Lowpoly_Environments` |
 | [Low Poly - Apocalyptic Survivor/Assassin Character, de Shady_3d](https://assetstore.unity.com/packages/3d/characters/low-poly-apocalyptic-survivor-assassin-character-386630) | 1.0 | `Assets/Shady_3d` |
 | [First Person + Third Person - Character Controllers, de Unity](https://assetstore.unity.com/packages/3d/characters/first-person-third-person-character-controllers-196526) | Consultar version en My Assets | `Assets/Starter Assets` |
+| [AllSky Free - 10 Sky / Skybox Set](https://assetstore.unity.com/packages/2d/textures-materials/sky/allsky-free-10-sky-skybox-set-146014) | Consultar version en My Assets | `Assets/AllSkyFree` |
 
 Hasta importar estos paquetes, los muebles y arboles pueden mostrar referencias
 de mallas o texturas faltantes. Las carpetas originales y sus `.meta` se excluyen
@@ -47,6 +48,8 @@ La escena contiene la mini casa, un Terrain de 100 x 100 metros con cerros,
 28 arboles y un ambiente nocturno con niebla. El superviviente con mascara y
 capucha usa las animaciones humanoides y el controlador de Starter Assets, con
 camara de tercera persona que evita obstaculos. El antiguo Jugador queda desactivado.
+El cielo usa Night MoonBurst de AllSky Free, con una copia del material ajustada
+para la noche. Se conservan la niebla fria y las luces calidas de la casa.
 
 Controles: WASD para caminar, Shift para correr, Espacio para saltar y mouse para
 girar la camara. Escape libera el cursor; un clic en Game lo vuelve a capturar.
