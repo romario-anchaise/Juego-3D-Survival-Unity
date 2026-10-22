@@ -1,0 +1,18 @@
+PASTO 3D PARA URP
+
+Prefabs en Assets/FearMansion/Pasto/Prefabs:
+Pasto_Mata_3D: mata individual, sin collider.
+Pasto_Parche_4x4: hierba para cubrir un suelo existente, sin collider.
+Suelo_Con_Pasto_4x4: suelo de 4x4 metros con hierba y colision.
+Suelo_Con_Pasto_20x20: suelo de 20x20 metros con hierba y colision.
+
+Arrastra una pieza desde Project a Scene fuera de Play.
+La superficie del suelo coincide con la posicion Y del objeto.
+La hierba se puede atravesar; la colision esta en el suelo.
+Los materiales se pueden ajustar en la carpeta Materials.
+Las hojas son geometria 3D estatica, sin animacion de viento.
+Los suelos son piezas planas; no se esculpen con las herramientas Terrain.
+El material del suelo usa la textura del paquete Polytope Studio importado.
+
+Tools > Fear Mansion > Create Grass crea las piezas faltantes y coloca
+una superficie grande alrededor de Jugador si no existe una ya creada.

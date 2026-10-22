@@ -1,0 +1,37 @@
+KIT FEAR MANSION - 84 PREFABS
+
+En Project abre Assets > FearMansion > Prefabs y arrastra las piezas a Scene.
+Construye fuera de Play y guarda la escena con Ctrl+S.
+
+CARPETAS
+Construccion: paredes, pisos, ventanas, escalera, zocalo, cornisa y baranda.
+Decoracion: cuadros, espejo, alfombras, cortinas, reloj, libros y plantas.
+Muebles: sillas con respaldo, sillon, comoda, armario, estanteria y mas.
+Cocina: muebles bajos y altos, isla, lavaplatos, estufa, nevera y campana.
+Bano: lavamanos, inodoro, banera, ducha, toallero y botiquin.
+Iluminacion: lamparas con luz calida de mesa, pie, techo y pared.
+Exterior: porche, columnas, escalones, cerca y jardinera.
+
+COLOCACION
+Las piezas tienen escala inicial 1,1,1 y medidas en metros.
+Paredes: altura 3.2 m. Segundo piso del kit original: Y=3.6 m.
+Pisos: la superficie superior queda a la altura Y del objeto.
+Muebles de pie: coloca el objeto a la altura del piso.
+Cuadros y espejos: el origen esta al centro del borde inferior;
+su cara visible apunta hacia Z negativo. Usa E para girarlos.
+Lampara de techo: el origen es el punto de sujecion; cuelga hacia abajo.
+Cornisas y vigas: ajusta su altura manualmente.
+Ventana_Decorativa es un adorno; Pared_Con_Ventana incluye la abertura.
+
+PERSONALIZAR
+Todos los modelos usan formas geometricas simples, materiales y colliders.
+Puedes desplegar cada objeto para editar sus partes.
+Los cuadros contienen arte geometrico; los espejos son decorativos.
+Los muebles, puertas, cajones y relojes son estaticos.
+Materiales compartidos en Assets/FearMansion/Materials: al editarlos,
+cambian todas las piezas que usan ese material.
+
+RECREAR PIEZAS FALTANTES
+Tools > Fear Mansion > Create Reusable Pieces.
+El comando conserva los prefabs y materiales que ya existan.
+No genera la mansion ni agrega objetos a tu escena.

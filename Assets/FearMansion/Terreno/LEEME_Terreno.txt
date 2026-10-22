@@ -1,0 +1,27 @@
+TERRENO CON CERROS
+
+Objeto en Hierarchy: Terreno_Con_Cerros.
+Tamano: 100 x 100 metros, con cuatro cerros y una zona central plana
+de 36 metros de diametro para construir. La superficie plana esta en Y=0.
+El TerrainCollider permite caminar sobre sus pendientes.
+
+La hierba es un detalle instanciado del Terrain, no parches planos.
+Se adapta a las alturas al esculpir el terreno. Se dibuja hasta 55 metros
+de la camara; el suelo conserva su textura a distancias mayores.
+
+EDITAR FUERA DE PLAY
+Selecciona Terreno_Con_Cerros > Paint Terrain > Raise or Lower Terrain.
+Clic levanta el suelo; Shift + clic lo baja. Usa poca intensidad.
+Smooth Height suaviza los cerros; Set Height aplana zonas.
+Paint Details permite anadir o borrar hierba con el pincel.
+Los cambios de altura se guardan en el asset TerrainData.
+
+AMPLIAR
+En Terrain Settings puedes cambiar Terrain Width y Terrain Length,
+pero esto estira el terreno existente y sus cerros.
+Para extender el mundo conservando su escala usa Create Neighbor Terrains
+y elige un borde para crear otra parcela, que luego puedes esculpir.
+
+El anterior Suelo_Con_Pasto_Listo esta desactivado en Hierarchy
+para no superponer dos suelos. Sus prefabs siguen disponibles.
+Los materiales y datos del terreno estan en Assets/FearMansion/Terreno.

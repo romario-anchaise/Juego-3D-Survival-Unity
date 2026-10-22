@@ -1,0 +1,23 @@
+AMBIENTE NOCTURNO DE TERROR
+
+La escena usa cielo nocturno con luna y nubes, niebla fria, luz lunar
+azulada y luces calidas en la casa. No incluye lluvia, sonido ni relampagos.
+
+En Hierarchy selecciona Ambiente_Terror para ajustar el Volume Profile:
+Color Adjustments: exposicion, contraste y saturacion.
+Vignette: oscurecimiento suave de las esquinas.
+Bloom: resplandor ligero de luces brillantes.
+Tonemapping: ACES.
+
+La niebla y la iluminacion ambiental estan en los ajustes Lighting
+de la escena. La densidad de niebla inicial es 0.023.
+La luz Sol_Terreno se reutiliza como luna, con intensidad 0.5 y color frio.
+Las luces de la casa tienen sombras adaptadas a URP.
+El cielo se puede ajustar editando Cielo_Noche.mat en esta carpeta.
+
+Tools > Fear Mansion > Apply Horror Night vuelve a aplicar el preset.
+Render Horror Preview guarda una vista de comprobacion en
+Logs/Noche_Terror_Vista.png, sin mover la camara del jugador.
+
+Respaldo de la escena antes del cambio:
+Logs/SampleScene.before-horror-atmosphere.unity.txt

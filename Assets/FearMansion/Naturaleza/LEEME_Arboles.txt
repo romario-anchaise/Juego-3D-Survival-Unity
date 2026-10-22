@@ -1,0 +1,23 @@
+ARBOLES ALREDEDOR DE LA CASA
+
+En Hierarchy: Arboles_Alrededor_Casa.
+Incluye 28 arboles colocados sobre el Terrain, con altura, giro y
+separacion variables. La entrada y el camino quedan despejados.
+
+Prefabs reutilizables en Assets/FearMansion/Naturaleza/Prefabs:
+Pino_URP, Arbol_Frondoso_URP, Manzano_URP y Peral_URP.
+Arrastralos a la escena para anadir mas ejemplares.
+Los troncos tienen CapsuleCollider; las hojas permiten pasar.
+Conservan sus niveles de detalle (LOD) y usan materiales URP con
+recorte de transparencia y sombras. Son arboles estaticos, sin viento.
+
+Modelos y texturas: Low Poly Environment - Nature Free, Polytope Studio.
+Conserva la carpeta original Polytope Studio para mantener referencias.
+El estilo visual de los modelos es low poly, con distribucion natural.
+
+Puedes mover cada arbol desde Hierarchy. Si cambias las alturas del
+Terrain despues, ajusta tambien la posicion Y de los arboles afectados:
+estos son prefabs de escena, no Tree Instances del Terrain.
+
+Tools > Fear Mansion > Plant Trees Around House crea el conjunto si
+todavia no existe. No duplica el conjunto al volver a ejecutarlo.

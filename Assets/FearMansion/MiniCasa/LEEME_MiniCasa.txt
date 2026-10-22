@@ -1,0 +1,28 @@
+MINI CASA AMUEBLADA
+
+Objeto en la escena: MiniCasa_Amueblada.
+Prefab reutilizable: Assets/FearMansion/MiniCasa/Prefabs/MiniCasa_Amueblada.prefab
+Medidas aproximadas: 9 x 8 metros, sin contar el porche y el camino.
+El piso interior esta a 18 cm del terreno, con escalon y porche de acceso.
+
+Incluye sala, cocina, dormitorio, bano, ventanas, techo a dos aguas y luces.
+Los 24 muebles y accesorios provienen del paquete instalado
+House Interior - Free, de nappin. Conserva Assets/nappin para mantener las
+referencias a sus mallas y texturas. La estructura de la casa es propia.
+Los materiales URP de esta casa se guardan en MiniCasa/Materials.
+
+EDITAR
+Despliega MiniCasa_Amueblada en Hierarchy:
+Estructura: paredes, piso, ventanas y divisiones.
+Muebles_nappin: cada mueble tiene un grupo para moverlo o girarlo.
+Techo: cubierta y cielo raso.
+Porche: pilares, tarima, escalon y camino.
+
+Tools > Fear Mansion > Preview Mini House Interior oculta el techo
+solo en Scene para revisar o decorar. No lo oculta en el juego.
+Show Mini House Roof vuelve a mostrarlo.
+
+La entrada queda abierta. Las puertas, muebles y cajones son estaticos.
+Se comprobo la compatibilidad de materiales y el espacio en tres pasos.
+El suelo del Terrain tiene la hierba retirada bajo la casa y el acceso.
+Guarda los cambios de escena con Ctrl+S fuera de Play.

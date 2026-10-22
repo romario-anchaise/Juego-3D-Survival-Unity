@@ -1,0 +1,45 @@
+# Unity-generated caches and local editor state
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Generated IDE projects and per-user settings
+/.vs/
+/.idea/
+/.vscode/
+/*.csproj
+/*.sln
+/*.slnx
+/*.suo
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+/*.unityproj
+/*.opendb
+/*.VC.db
+
+# Unity crash reports and temporary backups
+/sysinfo.txt
+/Assets/**/.DS_Store
+/Assets/**/Thumbs.db
+/Assets/**/~$*
+/Assets/**/MemoryCaptures/
+/Assets/**/MemoryCaptures.meta
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Asset Store dependencies: import through Unity, do not redistribute publicly.
+/Assets/nappin/
+/Assets/nappin.meta
+/Assets/Polytope Studio/
+/Assets/Polytope Studio.meta
