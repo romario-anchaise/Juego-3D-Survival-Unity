@@ -21,7 +21,8 @@ debe obtenerlos e importarlos desde su cuenta de Unity, conforme a sus licencias
 | --- | --- | --- |
 | [House Interior - Free, de nappin](https://assetstore.unity.com/packages/3d/props/interior/house-interior-free-258782) | 2.0.0 | `Assets/nappin/HouseInteriorPack` |
 | [Low Poly Environment - Nature Free, de Polytope Studio](https://assetstore.unity.com/packages/3d/environments/low-poly-environment-nature-free-lowpoly-medieval-fantasy-series-187052) | 1.1.2 | `Assets/Polytope Studio/Lowpoly_Environments` |
-| [Low Poly - Apocalyptic Survivor/Assassin Character, de Shady_3d](https://assetstore.unity.com/packages/3d/characters/low-poly-apocalyptic-survivor-assassin-character-386630) | Importado; consultar version en My Assets | `Assets/Shady_3d` |
+| [Low Poly - Apocalyptic Survivor/Assassin Character, de Shady_3d](https://assetstore.unity.com/packages/3d/characters/low-poly-apocalyptic-survivor-assassin-character-386630) | 1.0 | `Assets/Shady_3d` |
+| [First Person + Third Person - Character Controllers, de Unity](https://assetstore.unity.com/packages/3d/characters/first-person-third-person-character-controllers-196526) | Consultar version en My Assets | `Assets/Starter Assets` |
 
 Hasta importar estos paquetes, los muebles y arboles pueden mostrar referencias
 de mallas o texturas faltantes. Las carpetas originales y sus `.meta` se excluyen
@@ -43,11 +44,16 @@ sin revisar antes los cambios manuales de tu escena.
 ## Estado de este punto de guardado
 
 La escena contiene la mini casa, un Terrain de 100 x 100 metros con cerros,
-28 arboles y un ambiente nocturno con niebla. El cambio a personaje en tercera
-persona todavia esta pendiente. El personaje de Shady_3d ya esta importado
-localmente; falta integrar el controlador y las animaciones de tercera persona.
-La posicion de Main Camera necesita revision:
-en esta escena se detecto por debajo del terreno.
+28 arboles y un ambiente nocturno con niebla. El superviviente con mascara y
+capucha usa las animaciones humanoides y el controlador de Starter Assets, con
+camara de tercera persona que evita obstaculos. El antiguo Jugador queda desactivado.
+
+Controles: WASD para caminar, Shift para correr, Espacio para saltar y mouse para
+girar la camara. Escape libera el cursor; un clic en Game lo vuelve a capturar.
+
+El prefab reutilizable esta en `Assets/FearMansion/Personaje/Superviviente_TerceraPersona.prefab`.
+Necesita los paquetes de personaje y Starter Assets importados. La camara de
+seguimiento esta configurada en SampleScene.
 
 Las carpetas `Library`, `Temp`, `Logs`, `UserSettings` y las compilaciones
 se generan localmente y no forman parte del repositorio.

@@ -45,3 +45,10 @@ Desktop.ini
 /Assets/Polytope Studio.meta
 /Assets/Shady_3d/
 /Assets/Shady_3d.meta
+
+/Assets/Starter Assets/
+/Assets/Starter Assets.meta
+
+# Help scripts overwritten by the Starter Assets import.
+/Assets/TutorialInfo/Scripts/
+/Assets/TutorialInfo/Scripts.meta
