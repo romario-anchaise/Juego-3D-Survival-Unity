@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Practicas_S09_S10/Escenas/S09_Orientacion.unity
+    guid: b89e7dd363505c043a05e11c300f8f75
+  - enabled: 1
+    path: Assets/Practicas_S09_S10/Escenas/S09_Laberinto_Imposible.unity
+    guid: 22ab80ee433ed2746a898bce2f5f4add
+  - enabled: 1
+    path: Assets/Practicas_S09_S10/Escenas/S10_Habitacion_Emocional.unity
+    guid: ee42d133e8e5ad24393c91e7edea93e4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
