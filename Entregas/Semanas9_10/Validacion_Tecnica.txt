@@ -1,0 +1,4 @@
+Prueba automatizada local, no sustituye al tester humano.
+PASS: dos capas Terrain; Composer Dead Zone; Trigger; controlador propio; luces agrupadas; exactamente dos luces con sombras.
+TriggerEnter=True; TriggerExit=True; Animated=True; JumpHeight=1,199; WallZ=-5,384; Grounded=True
+Videos: tres MP4 comparativos de renders reales, codificados y decodificados correctamente. La build Windows es opcional y no se entrega como verificada; se interrumpio su compilacion de shaders tras completar las pruebas de Editor y los videos que permiten las guias.

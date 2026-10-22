@@ -37,9 +37,9 @@ public static class FearMansionHorrorAtmosphere
         RenderSettings.fogColor=new Color(.035f,.05f,.075f);
         RenderSettings.fogDensity=.023f;
         RenderSettings.ambientMode=AmbientMode.Trilight;
-        RenderSettings.ambientSkyColor=new Color(.13f,.16f,.24f);
-        RenderSettings.ambientEquatorColor=new Color(.08f,.1f,.15f);
-        RenderSettings.ambientGroundColor=new Color(.035f,.045f,.07f);
+        RenderSettings.ambientSkyColor=new Color(.36f,.41f,.52f);
+        RenderSettings.ambientEquatorColor=new Color(.26f,.30f,.39f);
+        RenderSettings.ambientGroundColor=new Color(.16f,.19f,.25f);
         RenderSettings.ambientIntensity=1;
         RenderSettings.reflectionIntensity=.25f;
 
@@ -47,20 +47,20 @@ public static class FearMansionHorrorAtmosphere
         foreach(var light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) {
             if(light.type!=LightType.Directional || !light.isActiveAndEnabled) continue;
             Undo.RecordObject(light,"Atenuar luz para la noche");
-            light.intensity=.5f;
-            light.color=new Color(.48f,.63f,1);
+            light.intensity=1.1f;
+            light.color=new Color(.65f,.76f,1);
             light.shadows=LightShadows.Soft;
-            light.shadowStrength=.85f;
+            light.shadowStrength=.65f;
             if(moon==null) moon=light;
         }
         if(moon==null) {
             var g=new GameObject("Luz_Luna");
             moon=g.AddComponent<Light>(); moon.type=LightType.Directional;
-            moon.color=new Color(.48f,.63f,1); moon.intensity=.5f; moon.shadows=LightShadows.Soft;
+            moon.color=new Color(.65f,.76f,1); moon.intensity=1.1f; moon.shadows=LightShadows.Soft; moon.shadowStrength=.65f;
             Undo.RegisterCreatedObjectUndo(g,"Crear luz de luna");
         }
         Undo.RecordObject(moon.transform,"Orientar luz de luna");
-        moon.transform.rotation=Quaternion.LookRotation(-new Vector3(.35f,.28f,.88f).normalized);
+        moon.transform.rotation=Quaternion.LookRotation(-new Vector3(.35f,.55f,.88f).normalized);
         RenderSettings.sun=moon;
 
         var house=GameObject.Find("MiniCasa_Amueblada");
@@ -70,7 +70,7 @@ public static class FearMansionHorrorAtmosphere
             light.color=new Color(1,.69f,.36f);
             light.intensity=light.name.Contains("Porche")?2.4f:3.2f;
             light.range=light.name.Contains("Porche")?5:6;
-            light.shadows=LightShadows.Soft;
+            light.shadows=LightShadows.None;
             var lightData=light.GetComponent<UniversalAdditionalLightData>();
             if(lightData==null) lightData=Undo.AddComponent<UniversalAdditionalLightData>(light.gameObject);
             var serialized=new SerializedObject(lightData);
@@ -97,6 +97,10 @@ public static class FearMansionHorrorAtmosphere
         if(profile.TryGet<ColorAdjustments>(out var grading)) {
             grading.postExposure.value=0; grading.contrast.value=5; grading.saturation.value=-18;
             EditorUtility.SetDirty(grading);
+        }
+        if(profile.TryGet<Vignette>(out var edgeDarkening)) {
+            edgeDarkening.intensity.value=.15f;
+            EditorUtility.SetDirty(edgeDarkening);
         }
         var environment=GameObject.Find("Ambiente_Terror");
         if(environment==null) {
@@ -130,6 +134,23 @@ public static class FearMansionHorrorAtmosphere
             sceneView.Repaint();
         }
         Debug.Log("Ambiente de terror verificado: cielo nocturno con luna y nubes, niebla fria, luz lunar tenue, sombras y luces calidas en la casa. Sin destellos ni cambios de camara.");
+    }
+    [MenuItem("Tools/Fear Mansion/Improve Outdoor Visibility %#&F2")]
+    public static void ImproveOutdoorVisibility()
+    {
+        if(EditorApplication.isPlayingOrWillChangePlaymode)
+            throw new InvalidOperationException("Sal de Play antes de ajustar las luces.");
+        var scene=EditorSceneManager.GetActiveScene();
+        if(scene.path!="Assets/Scenes/SampleScene.unity")
+            throw new InvalidOperationException("Abre SampleScene para ajustar el exterior.");
+        System.IO.Directory.CreateDirectory("Logs");
+        EditorSceneManager.SaveScene(scene,"Logs/Antes_Aclarar_Exterior.unity",true);
+        ApplyNight();
+        EditorSceneManager.SaveScene(scene);
+        RenderPreview();
+        System.IO.File.WriteAllText("Logs/Exterior_Visible.txt",
+            "OK: Ambient="+RenderSettings.ambientEquatorColor+"; Moon="+RenderSettings.sun.intensity+
+            "; Shadows="+RenderSettings.sun.shadowStrength+"; Sky="+RenderSettings.skybox.name);
     }
     [MenuItem("Tools/Fear Mansion/Apply AllSky Horror Sky %#&F6")]
     public static void ApplyAllSky()

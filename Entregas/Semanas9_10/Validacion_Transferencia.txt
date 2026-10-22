@@ -1,0 +1,1 @@
+PASS: 50 archivos del proyecto coinciden byte por byte con la copia validada en Unity (SHA-256).

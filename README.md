@@ -46,7 +46,7 @@ sin revisar antes los cambios manuales de tu escena.
 
 La escena contiene la mini casa, un Terrain de 100 x 100 metros con cerros,
 28 arboles y un ambiente nocturno con niebla. El superviviente con mascara y
-capucha usa las animaciones humanoides y el controlador de Starter Assets, con
+capucha usa las animaciones humanoides de Starter Assets y un controlador propio, con
 camara de tercera persona que evita obstaculos. El antiguo Jugador queda desactivado.
 El cielo usa Night MoonBurst de AllSky Free, con una copia del material ajustada
 para la noche. Se conservan la niebla fria y las luces calidas de la casa.
@@ -60,3 +60,15 @@ seguimiento esta configurada en SampleScene.
 
 Las carpetas `Library`, `Temp`, `Logs`, `UserSettings` y las compilaciones
 se generan localmente y no forman parte del repositorio.
+
+## Practicas de las semanas 9 y 10
+
+La guia de entrega y los Journals estan en `Entregas/Semanas9_10/LEEME.md`.
+El controlador propio esta en `Assets/Scripts/PlayerController3D.cs`.
+Las escenas didacticas y los perfiles de emocion estan en `Assets/Practicas_S09_S10`.
+En Play, F1 abre el selector de escenas. La habitacion usa teclas 1-5 y el
+laberinto usa P para mostrar la diferencia entre proyeccion y profundidad.
+
+El playtest humano, el dibujo a mano si se exige y la publicacion en el foro
+se registran como pendientes del estudiante. Las comprobaciones automaticas
+se guardan aparte y no se presentan como observaciones de otros jugadores.
