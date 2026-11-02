@@ -78,8 +78,18 @@ public class PlayerController3D : MonoBehaviour
         if(Cursor.lockState==CursorLockMode.Locked)
         {
             bool mouse=GetComponent<PlayerInput>()?.currentControlScheme=="KeyboardMouse";
-            var look=input.look*(mouse?mouseSensitivity:110f*Time.deltaTime);
-            yaw+=look.x; pitch=Mathf.Clamp(pitch-look.y,-35,65);
+            if(mouse && Mouse.current!=null)
+            {
+                // Leer el delta sin la inversión ni la escala 0.05 de Starter Assets.
+                var look=Mouse.current.delta.ReadValue()*mouseSensitivity;
+                yaw+=look.x; pitch=Mathf.Clamp(pitch-look.y,-35,65);
+            }
+            else
+            {
+                // Las acciones de Starter Assets ya invierten Y para el mando.
+                var look=input.look*(110f*Time.deltaTime);
+                yaw+=look.x; pitch=Mathf.Clamp(pitch+look.y,-35,65);
+            }
         }
         // Mantener la orbita independiente del giro del cuerpo, incluso con el cursor libre.
         cameraTarget.rotation=Quaternion.Euler(pitch,yaw,0);
