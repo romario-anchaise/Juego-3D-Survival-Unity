@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using StarterAssets;
+using Unity.Cinemachine;
+using UnityEngine.Rendering;
 
 [DefaultExecutionOrder(-20)]
 [RequireComponent(typeof(CharacterController), typeof(StarterAssetsInputs))]
@@ -18,6 +20,11 @@ public class PlayerController3D : MonoBehaviour
     [Tooltip("Asigna el Animator de Scavenger Variant.")]
     public Animator characterAnimator;
 
+    [Header("Cambio de vista (V)")]
+    public CinemachineCamera firstPersonCamera;
+    public Vector3 firstPersonEyeOffset = new Vector3(0, 1.65f, 0);
+    public bool IsFirstPerson { get; private set; }
+
     public bool lockPointerOnStart = true;
     public float mouseSensitivity = .12f;
 
@@ -33,10 +40,13 @@ public class PlayerController3D : MonoBehaviour
     PlayerInput playerInput;
     Animator animator;
     Camera view;
+    Renderer[] characterRenderers = new Renderer[0];
+    ShadowCastingMode[] originalShadowModes = new ShadowCastingMode[0];
 
     float yaw;
     float pitch = 8f;
     float turnVelocity;
+    Vector3 lastMoveDirection;
 
     void Awake()
     {
@@ -51,6 +61,13 @@ public class PlayerController3D : MonoBehaviour
 
         view = Camera.main;
         yaw = transform.eulerAngles.y;
+        lastMoveDirection = transform.forward;
+        characterRenderers = animator != null
+            ? animator.GetComponentsInChildren<Renderer>(true)
+            : new Renderer[0];
+        originalShadowModes = new ShadowCastingMode[characterRenderers.Length];
+        for (int i = 0; i < characterRenderers.Length; i++)
+            originalShadowModes[i] = characterRenderers[i].shadowCastingMode;
     }
 
     void Start()
@@ -64,6 +81,12 @@ public class PlayerController3D : MonoBehaviour
 
     void Update()
     {
+        if (firstPersonCamera != null && Cursor.lockState == CursorLockMode.Locked
+            && Time.timeScale > 0 && Keyboard.current != null
+            && Keyboard.current.vKey.wasPressedThisFrame)
+            SetFirstPerson(!IsFirstPerson);
+
+        UpdateLook();
         Grounded = controller.isGrounded;
 
         if (Grounded && VerticalSpeed < 0)
@@ -72,10 +95,10 @@ public class PlayerController3D : MonoBehaviour
         Vector2 axes = input.move;
         Vector3 direction = new Vector3(axes.x, 0, axes.y);
 
-        if (view != null)
+        if (IsFirstPerson || view != null)
         {
             direction = Quaternion.Euler(
-                0, view.transform.eulerAngles.y, 0
+                0, IsFirstPerson ? yaw : view.transform.eulerAngles.y, 0
             ) * direction;
         }
 
@@ -90,7 +113,11 @@ public class PlayerController3D : MonoBehaviour
             acceleration * Time.deltaTime
         );
 
-        if (direction.sqrMagnitude > .001f)
+        if (IsFirstPerson)
+        {
+            transform.rotation = Quaternion.Euler(0, yaw, 0);
+        }
+        else if (direction.sqrMagnitude > .001f)
         {
             float angle = Mathf.Atan2(direction.x, direction.z)
                 * Mathf.Rad2Deg;
@@ -117,9 +144,9 @@ public class PlayerController3D : MonoBehaviour
             VerticalSpeed + gravity * Time.deltaTime
         );
 
-        Vector3 horizontal = direction.sqrMagnitude > .001f
-            ? direction.normalized
-            : transform.forward;
+        if (direction.sqrMagnitude > .001f)
+            lastMoveDirection = direction.normalized;
+        Vector3 horizontal = lastMoveDirection;
 
         CollisionFlags collision = controller.Move(
             (horizontal * CurrentSpeed + Vector3.up * VerticalSpeed)
@@ -143,9 +170,17 @@ public class PlayerController3D : MonoBehaviour
 
     void LateUpdate()
     {
-        if (cameraTarget == null)
-            return;
+        if (cameraTarget != null)
+            cameraTarget.rotation = Quaternion.Euler(pitch, yaw, 0);
 
+        if (firstPersonCamera != null)
+            firstPersonCamera.transform.SetPositionAndRotation(
+                transform.TransformPoint(firstPersonEyeOffset),
+                Quaternion.Euler(pitch, yaw, 0));
+    }
+
+    void UpdateLook()
+    {
         if (Cursor.lockState == CursorLockMode.Locked)
         {
             bool mouse = playerInput != null
@@ -157,18 +192,43 @@ public class PlayerController3D : MonoBehaviour
                     * mouseSensitivity;
 
                 yaw += look.x;
-                pitch = Mathf.Clamp(pitch - look.y, -35, 65);
+                pitch = Mathf.Clamp(pitch - look.y, IsFirstPerson ? -80 : -35, IsFirstPerson ? 80 : 65);
             }
             else
             {
                 Vector2 look = input.look * (110f * Time.deltaTime);
 
                 yaw += look.x;
-                pitch = Mathf.Clamp(pitch + look.y, -35, 65);
+                pitch = Mathf.Clamp(pitch + look.y, IsFirstPerson ? -80 : -35, IsFirstPerson ? 80 : 65);
             }
         }
 
-        cameraTarget.rotation = Quaternion.Euler(pitch, yaw, 0);
+    }
+
+    public void SetFirstPerson(bool enabled)
+    {
+        if (!Application.isPlaying || firstPersonCamera == null)
+            return;
+
+        IsFirstPerson = enabled;
+        if (!enabled)
+            pitch = Mathf.Clamp(pitch, -35, 65);
+        else
+            transform.rotation = Quaternion.Euler(0, yaw, 0);
+
+        LateUpdate();
+        // Supera la prioridad del porche mientras se usa primera persona.
+        firstPersonCamera.Priority = 100;
+        firstPersonCamera.gameObject.SetActive(enabled);
+        for (int i = 0; i < characterRenderers.Length; i++)
+            if (characterRenderers[i] != null)
+                characterRenderers[i].shadowCastingMode = enabled
+                    ? ShadowCastingMode.ShadowsOnly : originalShadowModes[i];
+    }
+
+    void OnDisable()
+    {
+        SetFirstPerson(false);
     }
 
     void OnFootstep(AnimationEvent e)
