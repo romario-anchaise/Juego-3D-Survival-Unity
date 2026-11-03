@@ -24,6 +24,12 @@ debe obtenerlos e importarlos desde su cuenta de Unity, conforme a sus licencias
 | [Low Poly - Apocalyptic Survivor/Assassin Character, de Shady_3d](https://assetstore.unity.com/packages/3d/characters/low-poly-apocalyptic-survivor-assassin-character-386630) | 1.0 | `Assets/Shady_3d` |
 | [First Person + Third Person - Character Controllers, de Unity](https://assetstore.unity.com/packages/3d/characters/first-person-third-person-character-controllers-196526) | Consultar version en My Assets | `Assets/Starter Assets` |
 | [AllSky Free - 10 Sky / Skybox Set](https://assetstore.unity.com/packages/2d/textures-materials/sky/allsky-free-10-sky-skybox-set-146014) | Consultar version en My Assets | `Assets/AllSkyFree` |
+| [Free Scavenger](https://assetstore.unity.com/packages/3d/characters/humanoids/humans/free-scavenger-261065) | Consultar version en My Assets | `Assets/Homeless_people/Free_Scavenger` |
+
+Para Free Scavenger, selecciona los tres materiales de su carpeta `Materials`
+y usa **Edit > Rendering > Materials > Convert Selected Built-in Materials to
+Current SRP** para convertirlos a URP. Esta conversion local evita el color rosa;
+los materiales del paquete no se distribuyen en Git.
 
 Hasta importar estos paquetes, los muebles y arboles pueden mostrar referencias
 de mallas o texturas faltantes. Las carpetas originales y sus `.meta` se excluyen
@@ -45,9 +51,13 @@ sin revisar antes los cambios manuales de tu escena.
 ## Estado de este punto de guardado
 
 La escena contiene la mini casa, un Terrain de 100 x 100 metros con cerros,
-28 arboles y un ambiente nocturno con niebla. El superviviente con mascara y
-capucha usa las animaciones humanoides de Starter Assets y un controlador propio, con
-camara de tercera persona que evita obstaculos. El antiguo Jugador queda desactivado.
+28 arboles y un ambiente nocturno con niebla. El viajero (`Jugado_Viajero`) usa
+Free Scavenger con las animaciones humanoides de Starter Assets y el controlador
+propio existente. `PlayerController3D.characterAnimator` apunta al Animator del
+hijo `Scavenger Variant`; `PlayerAnimationEvents` reenvia los eventos de pasos
+y aterrizaje al controlador del padre. El superviviente anterior queda desactivado.
+La camara de tercera persona sigue el CameraTarget del viajero, centrada y a
+2.7 metros de distancia. Todavia no se implementa alternar a primera persona.
 El cielo usa Night MoonBurst de AllSky Free, con una copia del material ajustada
 para la noche. Se conservan la niebla fria y las luces calidas de la casa.
 
