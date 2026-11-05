@@ -28,6 +28,7 @@ Material:
     - _Drips: 1
     - _Opacity: 0.94
     - _Seed: 1
+    - _WarningMessage: 1
     - _Wetness: 0.45
     m_Colors:
     - _BloodColor: {r: 0.5, g: 0.012, b: 0.018, a: 1}
