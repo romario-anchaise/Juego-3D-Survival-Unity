@@ -76,6 +76,20 @@ seguimiento esta configurada en SampleScene.
 Las carpetas `Library`, `Temp`, `Logs`, `UserSettings` y las compilaciones
 se generan localmente y no forman parte del repositorio.
 
+## Caserio y primera casa
+
+SampleScene incluye dos terrenos conectados y un camino de tierra hasta un taller
+provisional. Cuatro faroles de madera con colisiones guian el recorrido.
+En el dormitorio, acercate a la nota del escritorio y pulsa E para leerla;
+E o Escape la cierran. El primer cierre reproduce dos pasos en el porche una vez
+por partida. La escena incorpora pertenencias junto a la cama y una marca exterior
+en el cristal. El enemigo y los objetos de escape siguen pendientes de implementar.
+
+Los faroles Khronos y Paper001 son CC0; Caveat incluye su licencia OFL.
+Los creditos estan en las carpetas Iluminacion/KhronosLantern y NotaDormitorio,
+dentro de Assets/FearMansion. La mochila y los pasos requieren los paquetes
+Free Scavenger y Starter Assets descritos arriba.
+
 ## Practicas de las semanas 9 y 10
 
 La guia de entrega y los Journals estan en `Entregas/Semanas9_10/LEEME.md`.

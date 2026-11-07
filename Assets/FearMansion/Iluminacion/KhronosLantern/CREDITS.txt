@@ -1,0 +1,3 @@
+Lantern, Microsoft (2017), initial version by sbtron. CC0 1.0.
+Source: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Lantern
+Converted from GLB to OBJ and rescaled for the caserio.
