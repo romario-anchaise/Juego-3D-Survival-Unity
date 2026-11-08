@@ -42,6 +42,8 @@ Desktop.ini
 # Garage Props models/textures are local dependencies; keep their Unity metas.
 /Assets/ThirdParty/GarageProps/*.fbx
 /Assets/ThirdParty/GarageProps/*.png
+/Assets/ThirdParty/BagMan/*.fbx
+/Assets/ThirdParty/BagMan/*.png
 /Assets/nappin/
 /Assets/nappin.meta
 /Assets/Polytope Studio/

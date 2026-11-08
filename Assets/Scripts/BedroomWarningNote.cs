@@ -2,16 +2,25 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
+[DefaultExecutionOrder(-100)]
 public sealed class BedroomWarningNote : MonoBehaviour
 {
     [SerializeField] Transform player;
     [SerializeField] GameObject prompt;
     [SerializeField] GameObject page;
     [SerializeField, Min(.1f)] float reach = 1.65f;
+    [SerializeField] Collider aimTarget;
     [SerializeField] AudioSource porchAudio;
     [SerializeField] AudioClip firstStep;
     [SerializeField] AudioClip secondStep;
     bool footstepsTriggered;
+    [SerializeField] UnityEngine.Events.UnityEvent onFirstClose = new UnityEngine.Events.UnityEvent();
+    bool firstCloseTriggered;
+    static int lastInteractionFrame = -1;
+    public UnityEngine.Events.UnityEvent FirstReadClosed => onFirstClose;
+    public static bool InputConsumedThisFrame => lastInteractionFrame == Time.frameCount;
+
+    public bool CanInteract() => InteractionAim.IsTargeted(aimTarget, player, reach);
 
     void Update()
     {
@@ -23,6 +32,7 @@ public sealed class BedroomWarningNote : MonoBehaviour
         Vector3 towardPaper = paper - eye;
         bool nearby = towardPaper.sqrMagnitude <= reach * reach
             && !Physics.Linecast(eye, paper, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        bool aimed = nearby && Cursor.lockState == CursorLockMode.Locked && CanInteract();
 
         var keyboard = Keyboard.current;
         if (page.activeSelf)
@@ -31,12 +41,13 @@ public sealed class BedroomWarningNote : MonoBehaviour
                 (keyboard.eKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)))
                 ClosePage();
         }
-        else if (nearby && keyboard != null && keyboard.eKey.wasPressedThisFrame)
+        else if (aimed && keyboard != null && keyboard.eKey.wasPressedThisFrame)
         {
+            lastInteractionFrame = Time.frameCount;
             page.SetActive(true);
         }
 
-        bool showPrompt = nearby && !page.activeSelf;
+        bool showPrompt = aimed && !page.activeSelf;
         if (prompt.activeSelf != showPrompt)
             prompt.SetActive(showPrompt);
     }
@@ -44,6 +55,12 @@ public sealed class BedroomWarningNote : MonoBehaviour
     void ClosePage()
     {
         page.SetActive(false);
+        lastInteractionFrame = Time.frameCount;
+        if (!firstCloseTriggered)
+        {
+            firstCloseTriggered = true;
+            onFirstClose?.Invoke();
+        }
         if (!footstepsTriggered && porchAudio != null && firstStep != null && secondStep != null)
         {
             footstepsTriggered = true;

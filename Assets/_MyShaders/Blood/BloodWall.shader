@@ -9,6 +9,7 @@ Shader "Survival/Horror/BloodWall"
         _Wetness ("Brillo humedo", Range(0,1)) = 0.45
         _Drips ("Chorretones", Range(0,1)) = 1
         [Toggle] _WarningMessage ("Mensaje FUERA DE AQUÍ", Float) = 0
+        [Enum(Mancha,0,Pentagrama,1,Emblema,2)] _CultSymbol ("Marca del culto", Float) = 0
     }
     SubShader
     {
@@ -33,6 +34,7 @@ Shader "Survival/Horror/BloodWall"
                 half4 _BloodColor, _DryColor;
                 float _Seed, _Opacity, _Wetness, _Drips;
                 float _WarningMessage;
+                float _CultSymbol;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0; };
             struct Varyings { float4 positionCS:SV_POSITION; float2 uv:TEXCOORD0; float3 positionWS:TEXCOORD1; half3 normalWS:TEXCOORD2; half fog:TEXCOORD3; };
@@ -112,6 +114,44 @@ Shader "Survival/Horror/BloodWall"
                 mask = max(mask, (1 - smoothstep(.016, .045, StrokeDistance(p, float2(4.96, 6.14), float2(4.94, 6.83)))) * .85);
                 return mask;
             }
+            float CultMask(float2 uv, float grain)
+            {
+                float2 p = (uv - .5) * 2;
+                // A slight wandering stroke avoids a perfect printed stencil.
+                p += float2(Noise(uv * 21 + _Seed), Noise(uv * 19 - _Seed)) * .018 - .009;
+                float ink = 10;
+                float angle = atan2(p.y, p.x);
+                float ring = abs(length(p) - .73);
+                if (_CultSymbol < 1.5)
+                {
+                    [unroll] for (int k = 0; k < 5; k++)
+                    {
+                        float a = -1.5707963 + k * 1.2566371;
+                        float b = -1.5707963 + (k + 2) * 1.2566371;
+                        float2 from = float2(cos(a), sin(a)) * .63;
+                        float2 to = float2(cos(b), sin(b)) * .63;
+                        // The last line stops short, as if the drawing was interrupted.
+                        if (k == 4) to = lerp(from, to, .64);
+                        ink = min(ink, StrokeDistance(p, from, to));
+                    }
+                    if (angle < 2.45 && angle > -2.9) ink = min(ink, ring);
+                }
+                else
+                {
+                    // Open ring and three descending cuts: the recurring cult signature.
+                    if (angle < 1.12 || angle > 1.82) ink = ring;
+                    [unroll] for (int j = 0; j < 3; j++)
+                    {
+                        float x = (j - 1) * .24;
+                        ink = min(ink, StrokeDistance(p, float2(x, .23 + j * .025),
+                            float2(x + .025, -.85 + abs(j - 1) * .13)));
+                    }
+                }
+                float width = .018 + grain * .012;
+                float mark = 1 - smoothstep(width, width + .013, ink);
+                // Dry pigment breaks up in the grain of the wall.
+                return mark * lerp(.35, 1, smoothstep(.16, .48, Noise(uv * 180 + _Seed)));
+            }
             Varyings Vert(Attributes input)
             {
                 Varyings o;
@@ -148,6 +188,8 @@ Shader "Survival/Horror/BloodWall"
                 if (_WarningMessage > .5)
                     mask=WarningMask(uv,grain);
                 mask=max(mask,speck);
+                if (_CultSymbol > .5)
+                    mask=CultMask(uv,grain);
                 mask*=smoothstep(0,.04,uv.x)*smoothstep(0,.04,uv.y)*smoothstep(0,.04,1-uv.x)*smoothstep(0,.04,1-uv.y);
                 half alpha=mask*_Opacity; clip(alpha-.025);
                 half3 n=normalize(i.normalWS)*IS_FRONT_VFACE(face,1,-1);

@@ -55,6 +55,48 @@ de esa carpeta. Por ahora son objetos de ambientacion, sin recogida interactiva.
 repetido dentro y fuera, aceite, sangre seca, un trapo y telaranas discretas.
 La lampara del banco reutiliza `OldBulbFlicker` con intervalos de 14-27 segundos;
 la luz general permanece encendida para mantener legible el espacio.
+La entrada usa un aplique metalico con iluminacion gris verdosa dirigida al
+umbral y al camino. El interior tiene menos luz general y sombras en el banco.
+
+Las marcas del culto estan en `Taller_Abandonado/Marcas_Culto`: un pentagrama
+interrumpido en la pared y otro parcialmente tapado por cajas, mas un emblema
+de circulo abierto y tres trazos descendentes en el tablero y la entrada.
+Son mascaras procedurales propias del shader `BloodWall`, con pigmento seco
+e irregular; no requieren texturas ni paquetes externos. El parametro
+`Marca del culto` queda en 0 para conservar las manchas anteriores.
+Los prefabs reutilizables estan en `Assets/FearMansion/AmbienteTerror/Taller`.
+
+La llave inglesa del banco se recoge con E al acercarse y mirar hacia ella,
+en primera o tercera persona. `PlayerInventory.HasWorkshopTool` guarda la
+recogida durante la partida; se reinicia al comenzar de nuevo la escena.
+No puede recogerse a traves de paredes ni duplicarse. Aparece una confirmacion
+breve y la herramienta desaparece del banco. Los golpes provisionales se
+retiraron; su uso en una salida sigue pendiente.
+
+La nota del taller, parcialmente cubierta por la caja roja, se lee con E.
+El punto central debe apuntar al papel; la herramienta tambien exige apuntado
+directo. Ambos objetivos usan triggers ajustados a su tamano y comprueban
+distancia y obstaculos desde el jugador y la camara. La nota permanece abierta
+sin exigir mantener el punto sobre el papel mientras se lee.
+Su advertencia pide no mirar mucho tiempo al vigilante, no salir y no acercarse.
+Su primer cierre dispara `WorkshopWatcherEncounter`: falla la luz del banco,
+se oye un roce espacial y aparece un vigilante inmovil entre los arboles.
+Al verlo se reproduce una textura de tension breve; al apartar la mirada
+desaparece. Ocurre una sola vez por partida, sin girar la camara ni perseguir
+al jugador. Tambien desaparece si el jugador se acerca a 6 metros, aunque
+mantenga la mirada fija. Si nadie lo descubre en 45 segundos, se retira silenciosamente.
+Mientras se lee la nota, E no recoge la herramienta simultaneamente.
+Los dos WAV de este encuentro se han sintetizado para el proyecto.
+Un punto discreto centrado sirve de referencia visual en primera y tercera
+persona. Se oculta al leer notas, liberar el cursor o pausar el juego.
+
+El modelo **Sackhead Killer / BagMan** es de **Aredius (Daniel Arias)**.
+Cada colaborador debe obtenerlo desde
+https://arediuspsx.itch.io/sackhead-killer y copiar `BagMan_Mesh_Tpose.fbx`,
+`BagMan_Idle.fbx` y `PSX_BagMan_TEXTURES.png` a `Assets/ThirdParty/BagMan`,
+conservando los `.meta` del repositorio. Los originales se excluyen de Git
+porque su licencia no permite redistribuirlos; la licencia se conserva junto
+a ellos. El autor solicita que se le comunique el uso del personaje.
 
 - `Assets/Editor`: generadores de prefabs, terreno, casa, vegetacion y ambiente.
 - `Assets/FearMansion`: piezas de construccion, materiales URP y recursos generados.
@@ -102,6 +144,9 @@ por partida. La escena incorpora pertenencias junto a la cama y una marca exteri
 en el cristal. El enemigo y los objetos de escape siguen pendientes de implementar.
 
 Los faroles Khronos y Paper001 son CC0; Caveat incluye su licencia OFL.
+Los titulos de la nota usan Help Me 1.10, de GGBotNet, bajo SIL OFL 1.1.
+La fuente original y su licencia se incluyen en `Assets/FearMansion/Fonts/HelpMe`.
+El cuerpo mantiene Caveat y las indicaciones de teclas conservan su fuente legible.
 Los creditos estan en las carpetas Iluminacion/KhronosLantern y NotaDormitorio,
 dentro de Assets/FearMansion. La mochila y los pasos requieren los paquetes
 Free Scavenger y Starter Assets descritos arriba.
