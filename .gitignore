@@ -39,6 +39,9 @@ Thumbs.db
 Desktop.ini
 
 # Asset Store dependencies: import through Unity, do not redistribute publicly.
+# Garage Props models/textures are local dependencies; keep their Unity metas.
+/Assets/ThirdParty/GarageProps/*.fbx
+/Assets/ThirdParty/GarageProps/*.png
 /Assets/nappin/
 /Assets/nappin.meta
 /Assets/Polytope Studio/

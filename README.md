@@ -40,6 +40,22 @@ redistribuyen sus modelos ni texturas, ni se otorga una licencia sobre ellos.
 
 ## Contenido propio
 
+### Objetos del taller: dependencia local
+
+El taller usa **Low Poly Garage Props - FREE SAMPLE 1.1.2**, de Amano007.
+Cada colaborador debe obtener el paquete por su cuenta. Del ZIP, copia los
+archivos de `Models/FBX` (los 25 FBX y las dos texturas PNG) directamente a
+`Assets/ThirdParty/GarageProps`, conservando los `.meta` del repositorio.
+Los materiales URP y las posiciones ya estan configurados en SampleScene.
+La licencia permite usarlos en el juego, pero prohibe redistribuir los recursos
+sueltos; por eso los FBX y PNG se excluyen de Git. Consulta el `LICENSE.txt`
+de esa carpeta. Por ahora son objetos de ambientacion, sin recogida interactiva.
+
+`Taller_Abandonado/Historia_Ambiental` contiene marcas de conteo, un simbolo
+repetido dentro y fuera, aceite, sangre seca, un trapo y telaranas discretas.
+La lampara del banco reutiliza `OldBulbFlicker` con intervalos de 14-27 segundos;
+la luz general permanece encendida para mantener legible el espacio.
+
 - `Assets/Editor`: generadores de prefabs, terreno, casa, vegetacion y ambiente.
 - `Assets/FearMansion`: piezas de construccion, materiales URP y recursos generados.
 - `Assets/Scenes/SampleScene.unity`: escena principal.
