@@ -122,13 +122,12 @@ Free Scavenger con las animaciones humanoides de Starter Assets y el controlador
 propio existente. `PlayerController3D.characterAnimator` apunta al Animator del
 hijo `Scavenger Variant`; `PlayerAnimationEvents` reenvia los eventos de pasos
 y aterrizaje al controlador del padre. El superviviente anterior queda desactivado.
-La camara de tercera persona sigue el CameraTarget del viajero, centrada y a
-2.7 metros de distancia. V alterna entre tercera y primera persona durante el
+La camara de tercera persona sigue el CameraTarget del viajero desde el hombro
+derecho, a 1.15 m de distancia. V alterna entre tercera y primera persona durante el
 juego, con el cursor capturado. La primera persona usa `Camara_PrimeraPersona`
 a 1.65 m del origen del jugador, con FOV 65 y sin mostrar el cuerpo; conserva
 su sombra. A/D permiten desplazarse lateralmente y S retroceder sin girar el
-cuerpo. Los cambios de vista son inmediatos para evitar atravesar el modelo;
-la camara del porche vuelve a participar al regresar a tercera persona.
+cuerpo. Los cambios de vista son inmediatos para evitar atravesar el modelo.
 El cielo usa Night MoonBurst de AllSky Free, con una copia del material ajustada
 para la noche. Se conservan la niebla fria y las luces calidas de la casa.
 
