@@ -1,0 +1,5 @@
+a forest (3) with a road at night for game
+Autor: dasy444 (https://sketchfab.com/dasy444)
+Licencia: Creative Commons Attribution (CC BY)
+Adaptaciones: separacion y ajuste de vegetacion, materiales URP y distribucion en el mapa de Survival.
+Adaptaciones adicionales: relieve y sendero originales integrados al mapa, vegetacion agrupada y colisiones.

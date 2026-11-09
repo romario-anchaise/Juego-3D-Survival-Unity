@@ -25,10 +25,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _CrimeShape: 1
     - _Drips: 0
-    - _Opacity: 0.94
+    - _Opacity: 0.46
     - _Seed: 51
-    - _Wetness: 0.75
+    - _Wetness: 0.27
     m_Colors:
     - _BloodColor: {r: 0.5, g: 0.012, b: 0.018, a: 1}
     - _DryColor: {r: 0.16, g: 0.012, b: 0.008, a: 1}

@@ -1,0 +1,5 @@
+Rusty roof house 3d model free
+Autor: iGauravRajput (https://sketchfab.com/iGauravRajput)
+Fuente: https://sketchfab.com/3d-models/rusty-roof-house-3d-model-free-2bc2a0e65d074ed587d9a67b53ec95a8
+Licencia: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+Adaptaciones: conversion de malla y materiales para Unity URP, escala y colisiones.

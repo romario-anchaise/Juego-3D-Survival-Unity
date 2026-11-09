@@ -8,7 +8,7 @@ arboles y ambiente nocturno de terror.
 1. Clona este repositorio y agregalo a Unity Hub como proyecto existente.
 2. Usa **Unity 6000.3.22f1**, con **Universal Render Pipeline (URP)**.
 3. Espera a que Unity instale las dependencias de `Packages/manifest.json`.
-4. Importa los paquetes de Asset Store indicados abajo, conservando sus
+4. Importa los paquetes externos indicados abajo, conservando sus
    carpetas originales.
 5. Abre `Assets/Scenes/SampleScene.unity`.
 
@@ -37,6 +37,14 @@ de Git; conserva los `.meta` que vienen con cada paquete al importarlo.
 
 Las piezas propias incluyen referencias a estos recursos externos. No se
 redistribuyen sus modelos ni texturas, ni se otorga una licencia sobre ellos.
+
+## Blood Decals (Fab)
+
+Para que aparezcan las texturas de sangre de la casa, descarga
+`blooddecals_v10.unitypackage` desde
+[Blood Decals - 3 Free Realistic PBR Decals](https://www.fab.com/listings/a4ffffd4-faa8-4e50-9ccd-278f1e7ec45c)
+e impórtalo en Unity. Conserva la carpeta `Assets/BloodDecals` y sus archivos
+`.meta` originales para que los materiales encuentren las texturas.
 
 ## Contenido propio
 

@@ -1,0 +1,4 @@
+Painted Wooden Chair 02 - Kirill Sannikov / Poly Haven (CC0)
+https://polyhaven.com/a/painted_wooden_chair_02
+https://polyhaven.com/license
+Adaptacion a Unity URP: material y prefab de silla con pivote al nivel del suelo.

@@ -86,8 +86,8 @@ public static class FearMansionMiniHouseBuilder
             WallSegment(wall,left,right,hole.bottom+hole.h,WallHeight);
             string trim=hole.window?"wood":"trim";
             foreach(float x in new[]{left-.035f,right+.035f})
-                Box(wall,"Marco_Vertical",new Vector3(x,FloorY+hole.bottom+hole.h/2,-.015f),new Vector3(.07f,hole.h+.1f,.25f),trim);
-            Box(wall,"Marco_Superior",new Vector3(hole.x,FloorY+hole.bottom+hole.h+.03f,-.015f),new Vector3(hole.w+.18f,.09f,.25f),trim);
+                Box(wall,"Marco_Vertical",new Vector3(x,FloorY+hole.bottom+hole.h/2,-.015f),new Vector3(.09f,hole.h+.1f,.26f),trim);
+            Box(wall,"Marco_Superior",new Vector3(hole.x,FloorY+hole.bottom+hole.h+.03f,-.015f),new Vector3(hole.w+.18f,.09f,.28f),trim);
             if(hole.window) {
                 Box(wall,"Alfeizar",new Vector3(hole.x,FloorY+hole.bottom,-.04f),new Vector3(hole.w+.25f,.09f,.36f),"wood");
                 var glass=Box(wall,"Cristal",new Vector3(hole.x,FloorY+hole.bottom+hole.h/2,0),new Vector3(hole.w-.04f,hole.h-.04f,.025f),"glass");
@@ -97,18 +97,20 @@ public static class FearMansionMiniHouseBuilder
             cursor=right;
         }
         WallSegment(wall,cursor,length/2,0,WallHeight);
-        Box(wall,"Cornisa",new Vector3(0,FloorY+WallHeight-.06f,0),new Vector3(length,.12f,.24f),"trim");
+        Box(wall,"Cornisa",new Vector3(0,FloorY+WallHeight-.06f,0),new Vector3(length,TrimHeight(wall,.13f,.108f),.24f),"trim");
     }
+    static float TrimHeight(Transform wall,float front,float side) =>
+        Mathf.Abs(Vector3.Dot(wall.localRotation*Vector3.right,Vector3.right))>.5f ? front : side;
     static void WallSegment(Transform wall,float a,float b,float bottom,float top) {
         if(b-a<.001f || top-bottom<.001f) return;
         Box(wall,"Pared",new Vector3((a+b)/2,FloorY+(bottom+top)/2,0),new Vector3(b-a,top-bottom,.18f),"wall");
-        if(bottom==0) Box(wall,"Zocalo",new Vector3((a+b)/2,FloorY+.055f,0),new Vector3(b-a,.11f,.22f),"wood");
+        if(bottom==0) Box(wall,"Zocalo",new Vector3((a+b)/2,FloorY+.057f,0),new Vector3(b-a,TrimHeight(wall,.12f,.116f),.22f),"wood");
     }
     static void BuildShell(Transform root) {
         Box(shell,"Cimentacion",new Vector3(0,.03f,0),new Vector3(9.25f,.18f,8.25f),"tile");
         Box(shell,"Piso",new Vector3(0,FloorY-.06f,0),new Vector3(9,.12f,8),"floor");
         // Floorboards add readable scale without requiring external textures.
-        for(int i=0;i<36;i++) Box(shell,"Junta_Piso",new Vector3(-4.375f+i*.25f,FloorY+.001f,0),new Vector3(.006f,.002f,8),"wood");
+        for(int i=0;i<36;i++) Box(shell,"Junta_Piso",new Vector3(-4.375f+i*.25f,FloorY+.002f,0),new Vector3(.006f,.006f,8),"wood");
         Wall("Fachada",new Vector3(0,0,-4),9,0,new Opening(-2.4f,1.8f,1.0f,1.25f,true),new Opening(1,1.3f,0,2.3f));
         Wall("Pared_Trasera",new Vector3(0,0,4),9,180,new Opening(1.8f,1.8f,1,1.25f,true),new Opening(-2.8f,.9f,1.35f,.8f,true));
         Wall("Pared_Oeste",new Vector3(-4.5f,0,0),8,90,new Opening(1.6f,1.5f,1,1.25f,true));
@@ -198,7 +200,21 @@ public static class FearMansionMiniHouseBuilder
         holder.localPosition=bottomCenter; holder.localRotation=Quaternion.Euler(0,angle,0);
         foreach(var renderer in instance.GetComponentsInChildren<Renderer>(true)) {
             var mapped=renderer.sharedMaterials;
-            for(int i=0;i<mapped.Length;i++) mapped[i]=ConvertMaterial(mapped[i]);
+            for(int i=0;i<mapped.Length;i++) {
+                var source = mapped[i];
+                string finish = (name, source?.name) switch {
+                    ("LaunchTable", "(Mat)GradientBeige") or
+                    ("BedsideTable", "(Mat)GradientYellow") or
+                    ("CoffeTable", "(Mat)GradientGrey") or
+                    ("DiningChair" or "Desk", "(Mat)GradientBrown") => "M_Mueble_MaderaGastada",
+                    ("Chair1", "(Mat)GradientRed") => "M_Mueble_AsientoCeniza",
+                    ("DiningChair" or "Desk", "(Mat)GradientDarkGreen") => "M_Mueble_OlivaApagado",
+                    _ => null
+                };
+                var aged = finish == null ? null :
+                    AssetDatabase.LoadAssetAtPath<Material>(Folder + "/Materials/" + finish + ".mat");
+                mapped[i] = aged != null ? aged : ConvertMaterial(source);
+            }
             renderer.sharedMaterials=mapped;
         }
         if(instance.GetComponentsInChildren<Collider>(true).Length==0) {

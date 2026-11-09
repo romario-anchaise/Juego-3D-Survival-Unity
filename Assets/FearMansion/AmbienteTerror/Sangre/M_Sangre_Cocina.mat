@@ -22,13 +22,26 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _FabColor:
+        m_Texture: {fileID: 2800000, guid: 682d65c719fa93740869ba0f37510d90, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FabNormal:
+        m_Texture: {fileID: 2800000, guid: 21ca4a078098af04d9a506862f411a84, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FabRoughness:
+        m_Texture: {fileID: 2800000, guid: 56f58cb0a5876a847b6483cb44f1bb62, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CrimeShape: 4
     - _Drips: 1
-    - _Opacity: 0.94
+    - _Opacity: 0.95
     - _Seed: 47
-    - _Wetness: 0.45
+    - _Wetness: 0.8
     m_Colors:
     - _BloodColor: {r: 0.5, g: 0.012, b: 0.018, a: 1}
     - _DryColor: {r: 0.16, g: 0.012, b: 0.008, a: 1}

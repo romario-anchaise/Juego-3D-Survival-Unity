@@ -1,0 +1,5 @@
+Stone Rock(part11)
+YN14R (https://sketchfab.com/YN14R)
+https://sketchfab.com/3d-models/stone-rockpart11-a2acbcb6b767467483459be6ccaa4534
+CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+Adaptaciones: geometria reducida, materiales URP y colision de roca.

@@ -10,6 +10,10 @@ Shader "Survival/Horror/BloodWall"
         _Drips ("Chorretones", Range(0,1)) = 1
         [Toggle] _WarningMessage ("Mensaje FUERA DE AQUÍ", Float) = 0
         [Enum(Mancha,0,Pentagrama,1,Emblema,2)] _CultSymbol ("Marca del culto", Float) = 0
+        [Enum(Original,0,Salpicadura,1,Huella,2,Arrastre,3,Charco,4)] _CrimeShape ("Forma de la mancha", Float) = 0
+        _FabColor ("Textura de sangre", 2D) = "white" {}
+        [Normal] _FabNormal ("Relieve", 2D) = "bump" {}
+        _FabRoughness ("Rugosidad", 2D) = "white" {}
     }
     SubShader
     {
@@ -35,9 +39,14 @@ Shader "Survival/Horror/BloodWall"
                 float _Seed, _Opacity, _Wetness, _Drips;
                 float _WarningMessage;
                 float _CultSymbol;
+                float _CrimeShape;
+                float4 _FabColor_TexelSize;
             CBUFFER_END
-            struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0; };
-            struct Varyings { float4 positionCS:SV_POSITION; float2 uv:TEXCOORD0; float3 positionWS:TEXCOORD1; half3 normalWS:TEXCOORD2; half fog:TEXCOORD3; };
+            TEXTURE2D(_FabColor); SAMPLER(sampler_FabColor);
+            TEXTURE2D(_FabNormal); SAMPLER(sampler_FabNormal);
+            TEXTURE2D(_FabRoughness); SAMPLER(sampler_FabRoughness);
+            struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0; float4 tangentOS:TANGENT; };
+            struct Varyings { float4 positionCS:SV_POSITION; float2 uv:TEXCOORD0; float3 positionWS:TEXCOORD1; half3 normalWS:TEXCOORD2; half fog:TEXCOORD3; half4 tangentWS:TEXCOORD4; };
             float Hash(float2 p) { return frac(sin(dot(p,float2(127.1,311.7)))*43758.5453); }
             float Noise(float2 p)
             {
@@ -152,12 +161,61 @@ Shader "Survival/Horror/BloodWall"
                 // Dry pigment breaks up in the grain of the wall.
                 return mark * lerp(.35, 1, smoothstep(.16, .48, Noise(uv * 180 + _Seed)));
             }
+            float CrimeMask(float2 uv, float grain)
+            {
+                float2 seed = float2(_Seed * 2.41, _Seed * 7.21);
+                float rough = (Noise(uv * 17 + seed) - .5) * .10;
+                if (_CrimeShape < 1.5)
+                {
+                    float2 cell = floor(uv * 19);
+                    float2 center = (cell + .16 + .68 * float2(Hash(cell + seed), Hash(cell + seed + 4))) / 19;
+                    float2 delta = center - float2(.30, .35);
+                    float spread = saturate(1 - length(float2(delta.x, (delta.y - delta.x * .40) * 1.8)));
+                    float radius = lerp(.002, .026, Hash(cell + seed + 11)) * spread;
+                    float2 drop = uv - center;
+                    drop.y -= drop.x * .4;
+                    return (1 - smoothstep(radius * .65, radius + .001, length(drop * float2(.66, 1.4))))
+                        * step(.68 - spread * .26, Hash(cell + seed + 16));
+                }
+                if (_CrimeShape < 2.5)
+                {
+                    float2 p = uv;
+                    p.x += (uv.y - .5) * .24;
+                    float palm = 1 - smoothstep(.86, 1.02, length((p - float2(.51,.42)) / float2(.18,.15)) + rough);
+                    float fingers = 0;
+                    [unroll] for (int k = 0; k < 4; k++)
+                    {
+                        float x = .38 + k * .088;
+                        float end = .83 - abs(k - 1) * .045;
+                        fingers = max(fingers, 1 - smoothstep(.021,.034,
+                            StrokeDistance(p,float2(x,.47),float2(x+(k-1.4)*.028,end)) + rough*.12));
+                    }
+                    float thumb = 1 - smoothstep(.03,.047,StrokeDistance(p,float2(.41,.38),float2(.26,.56)));
+                    float slip = (1 - smoothstep(.025,.058,abs(p.x - (.52 + (p.y-.42)*.42)) + rough*.3))
+                        * smoothstep(.10,.23,p.y) * (1-smoothstep(.35,.49,p.y)) * .67;
+                    return max(max(palm,fingers),max(thumb,slip)) * lerp(.36,1,smoothstep(.20,.57,grain));
+                }
+                if (_CrimeShape < 3.5)
+                {
+                    float center = .5 + sin(uv.y * 6 + _Seed) * .10;
+                    float width = .08 + Noise(float2(uv.y*12,_Seed))*.15;
+                    float edge = abs(uv.x-center) + rough;
+                    float breakup = smoothstep(.26,.63,Noise(uv * float2(54,8) + seed));
+                    return (1-smoothstep(width*.44,width,edge)) * breakup
+                        * smoothstep(.09,.31,uv.y) * (1-smoothstep(.68,.96,uv.y));
+                }
+                float2 p = uv - float2(.51,.51);
+                float pool = length(p / float2(.43,.34)) + rough * 2.6;
+                pool += .12 * sin(atan2(p.y,p.x)*5 + _Seed);
+                return 1 - smoothstep(.77,.99,pool);
+            }
             Varyings Vert(Attributes input)
             {
                 Varyings o;
                 o.positionWS=TransformObjectToWorld(input.positionOS.xyz);
                 o.positionCS=TransformWorldToHClip(o.positionWS);
                 o.normalWS=TransformObjectToWorldNormal(input.normalOS);
+                o.tangentWS=half4(TransformObjectToWorldDir(input.tangentOS.xyz), input.tangentOS.w * GetOddNegativeScale());
                 o.uv=input.uv; o.fog=ComputeFogFactor(o.positionCS.z); return o;
             }
             half4 Frag(Varyings i, FRONT_FACE_TYPE face:FRONT_FACE_SEMANTIC):SV_Target
@@ -185,29 +243,50 @@ Shader "Survival/Horror/BloodWall"
                 float2 center=(cell+float2(Hash(cell+offset),Hash(cell+offset+5)))/14;
                 float radius=.003+Hash(cell+offset+7)*.013;
                 float speck=(1-smoothstep(radius*.5,radius,distance(uv,center)))*step(.84,Hash(cell+offset+9));
-                if (_WarningMessage > .5)
-                    mask=WarningMask(uv,grain);
                 mask=max(mask,speck);
+                if (_CrimeShape > .5)
+                    mask=CrimeMask(uv,grain);
+                if (_WarningMessage > .5)
+                    mask=max(WarningMask(uv,grain),speck);
                 if (_CultSymbol > .5)
                     mask=CultMask(uv,grain);
                 mask*=smoothstep(0,.04,uv.x)*smoothstep(0,.04,uv.y)*smoothstep(0,.04,1-uv.x)*smoothstep(0,.04,1-uv.y);
+                // Collaborators without the local Fab textures retain the procedural decal.
+                bool textured = _FabColor_TexelSize.z > 4 && _WarningMessage < .5 && _CultSymbol < .5;
+                half4 decal=half4(0,0,0,0);
+                half gloss=_Wetness;
+                if (textured)
+                {
+                    decal=SAMPLE_TEXTURE2D(_FabColor,sampler_FabColor,uv);
+                    mask=decal.a;
+                    gloss=1-SAMPLE_TEXTURE2D(_FabRoughness,sampler_FabRoughness,uv).r;
+                }
                 half alpha=mask*_Opacity; clip(alpha-.025);
                 half3 n=normalize(i.normalWS)*IS_FRONT_VFACE(face,1,-1);
+                if (textured && abs(i.tangentWS.w) > .5)
+                {
+                    half3 t=normalize(i.tangentWS.xyz);
+                    half3 b=cross(n,t)*i.tangentWS.w;
+                    half3 detail=UnpackNormal(SAMPLE_TEXTURE2D(_FabNormal,sampler_FabNormal,uv));
+                    n=normalize(t*detail.x*.55+b*detail.y*.55+n*detail.z);
+                }
+                half exponent=lerp(15,90,gloss);
                 half3 view=GetWorldSpaceNormalizeViewDir(i.positionWS);
                 Light main=GetMainLight(TransformWorldToShadowCoord(i.positionWS));
                 half3 illumination=SampleSH(n)+main.color*saturate(dot(n,main.direction))*main.shadowAttenuation;
-                half spec=pow(saturate(dot(n,normalize(view+main.direction))),52)*main.shadowAttenuation;
+                half spec=pow(saturate(dot(n,normalize(view+main.direction))),exponent)*main.shadowAttenuation;
                 #ifdef _ADDITIONAL_LIGHTS
                 uint count=GetAdditionalLightsCount();
                 LIGHT_LOOP_BEGIN(count)
                     Light light=GetAdditionalLight(lightIndex,i.positionWS);
                     illumination+=light.color*saturate(dot(n,light.direction))*light.distanceAttenuation;
-                    spec+=pow(saturate(dot(n,normalize(view+light.direction))),52)*light.distanceAttenuation;
+                    spec+=pow(saturate(dot(n,normalize(view+light.direction))),exponent)*light.distanceAttenuation;
                 LIGHT_LOOP_END
                 #endif
                 half aged=saturate((1-grain)*.65+(1-mask)*.4);
-                half3 color=lerp(_BloodColor.rgb,_DryColor.rgb,aged)*max(illumination,half3(.2,.2,.2));
-                color+=spec*_Wetness*.12*mask;
+                half3 pigment=textured ? decal.rgb : lerp(_BloodColor.rgb,_DryColor.rgb,aged);
+                half3 color=pigment*max(illumination,half3(.24,.24,.24));
+                color+=spec*gloss*.12*mask;
                 return half4(MixFog(color,i.fog),alpha);
             }
             ENDHLSL

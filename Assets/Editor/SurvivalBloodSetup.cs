@@ -57,6 +57,7 @@ public static class SurvivalBloodSetup
         Place(house.transform,prefab,"Sangre_Puerta_Bano",new Vector3(3.95f,1.45f,1.095f),new Vector2(.8f,1.8f),37);
         Place(house.transform,prefab,"Sangre_Bano_Lateral",new Vector3(1.305f,1.4f,2.5f),new Vector2(1.7f,1.9f),41,new Vector3(0,90,0));
         Place(house.transform,prefab,"Sangre_Cocina",new Vector3(4.395f,1.6f,.25f),new Vector2(1.5f,1.8f),47,new Vector3(0,90,0));
+        AddWallStains(house.transform,prefab);
         var flat=new Vector3(90,0,0);
         Place(house.transform,prefab,"Sangre_Rastro_Camino_1",new Vector3(1,.054f,-9.6f),new Vector2(.85f,.7f),51,flat,true);
         Place(house.transform,prefab,"Sangre_Rastro_Camino_2",new Vector3(.95f,.054f,-8.4f),new Vector2(.9f,.7f),53,flat,true);
@@ -71,10 +72,34 @@ public static class SurvivalBloodSetup
         View(house.transform,"Logs/Sangre_Entrada.png",new Vector3(.3f,2,-8),new Vector3(.8f,1.4f,-4));
         View(house.transform,"Logs/Sangre_Bano.png",new Vector3(2.4f,1.65f,1.8f),new Vector3(3.6f,1.4f,3.895f));
         View(house.transform,"Logs/Sangre_Sala.png",new Vector3(.7f,1.9f,-3.2f),new Vector3(-1.8f,1.1f,1.1f));
-        File.WriteAllText("Logs/Sangre_Verificada.txt","PASS: shader URP sin errores; 18 manchas en paredes y suelos; prefab reutilizable sin colliders; escena guardada.");
-        Debug.Log("Sangre agregada: 18 manchas en fachada, sala, cocina, bano y rastro de entrada.");
+        File.WriteAllText("Logs/Sangre_Verificada.txt","PASS: shader URP sin errores; 34 manchas en paredes y suelos; prefab reutilizable sin colliders; escena guardada.");
+        Debug.Log("Sangre agregada: 34 manchas en fachada, sala, cocina, bano y rastro de entrada.");
     }
-    static void Place(Transform house,GameObject prefab,string name,Vector3 position,Vector2 size,int seed,Vector3? euler=null,bool floor=false)
+    static void AddWallStains(Transform house, GameObject prefab)
+    {
+        var east = new Vector3(0,90,0);
+        var west = new Vector3(0,-90,0);
+        var north = new Vector3(0,180,0);
+
+        Place(house,prefab,"Sangre_Sala_Oeste",new Vector3(-4.395f,1.46f,.12f),new Vector2(1.55f,2.15f),101,west,shape:0);
+        Place(house,prefab,"Sangre_Sala_Ventana",new Vector3(-2.4f,.73f,-3.895f),new Vector2(1.6f,.8f),107,north,shape:3);
+        Place(house,prefab,"Sangre_Recibidor_Pared",new Vector3(2.7f,1.53f,-3.895f),new Vector2(1.75f,2.15f),113,north,shape:1);
+        Place(house,prefab,"Sangre_Cocina_BajoVentana",new Vector3(4.395f,.73f,-1.8f),new Vector2(1.4f,.75f),127,east,shape:3);
+        Place(house,prefab,"Sangre_Cocina_Esquina",new Vector3(4.395f,1.59f,-3.17f),new Vector2(1.12f,2.2f),131,east,shape:0);
+        Place(house,prefab,"Sangre_Dormitorio_Cabecera",new Vector3(-3.65f,1.63f,3.895f),new Vector2(1.45f,2.15f),137,shape:1);
+        Place(house,prefab,"Sangre_Dormitorio_Escritorio",new Vector3(-.12f,1.68f,3.895f),new Vector2(1.2f,2f),139,shape:3);
+        Place(house,prefab,"Sangre_Dormitorio_Division",new Vector3(1.095f,1.51f,2.62f),new Vector2(2.15f,2.2f),149,east,shape:0);
+        Place(house,prefab,"Sangre_Dormitorio_Oeste",new Vector3(-4.395f,1.48f,2.83f),new Vector2(1.75f,2.15f),151,west,shape:3);
+        Place(house,prefab,"Sangre_Dormitorio_Puerta",new Vector3(-3.05f,1.5f,1.305f),new Vector2(1.55f,2.15f),157,north,shape:1);
+        Place(house,prefab,"Sangre_Bano_Este",new Vector3(4.395f,1.52f,2.52f),new Vector2(2.05f,2.18f),163,east,shape:1);
+        Place(house,prefab,"Sangre_Bano_Acceso",new Vector3(3.96f,1.51f,1.305f),new Vector2(.85f,2.12f),167,north,shape:3);
+        Place(house,prefab,"Sangre_Bano_Trasera",new Vector3(1.87f,1.34f,3.895f),new Vector2(.75f,1.75f),173,shape:1);
+        Place(house,prefab,"Sangre_Exterior_Oeste",new Vector3(-4.605f,1.48f,.75f),new Vector2(1.9f,2.1f),179,east,shape:1);
+        Place(house,prefab,"Sangre_Exterior_Este",new Vector3(4.605f,1.53f,1.75f),new Vector2(1.95f,2.15f),181,west,shape:3);
+        Place(house,prefab,"Sangre_Exterior_Trasera",new Vector3(-.15f,1.44f,4.105f),new Vector2(1.85f,2.1f),191,north,shape:0);
+    }
+
+    static void Place(Transform house,GameObject prefab,string name,Vector3 position,Vector2 size,int seed,Vector3? euler=null,bool floor=false,int shape=-1)
     {
         var existing=house.Find(name);
         var stain=existing!=null?existing.gameObject:(GameObject)PrefabUtility.InstantiatePrefab(prefab,house);
@@ -89,6 +114,7 @@ public static class SurvivalBloodSetup
             material=new Material(prefab.GetComponent<Renderer>().sharedMaterial);
             AssetDatabase.CreateAsset(material,path);
         }
+        if(shape>=0) material.SetFloat("_CrimeShape",shape);
         material.SetFloat("_Seed",seed);
         material.SetFloat("_Drips",floor?0:1);
         material.SetFloat("_Wetness",floor?.75f:.45f);
