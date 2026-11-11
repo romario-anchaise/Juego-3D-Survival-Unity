@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 2105366349333217473}
   - component: {fileID: 7483448896513494637}
   - component: {fileID: 5118402752014212879}
-  - component: {fileID: 4239358120976098265}
   m_Layer: 2
   m_Name: Superviviente_TerceraPersona
   m_TagString: Player
@@ -248,18 +247,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
   landing: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
---- !u!114 &4239358120976098265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592090572323578274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4030754f06ef4c9479faea40434dd294, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LabSceneMenu
 --- !u!1 &795350382484372662
 GameObject:
   m_ObjectHideFlags: 0
