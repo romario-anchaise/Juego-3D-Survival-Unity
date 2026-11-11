@@ -11,7 +11,9 @@ public class SurvivorCursor : MonoBehaviour
     void Start() { SetLocked(true); }
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) SetLocked(false);
+        // Closing a note already consumes Escape; keep control of the camera.
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame
+            && !BedroomWarningNote.InputConsumedThisFrame) SetLocked(false);
         else if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) SetLocked(true);
         if (Cursor.lockState != CursorLockMode.Locked) { input.move = Vector2.zero; input.look = Vector2.zero; input.jump = false; input.sprint = false; }
     }
