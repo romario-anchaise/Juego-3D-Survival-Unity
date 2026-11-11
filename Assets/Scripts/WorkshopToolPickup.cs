@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public sealed class WorkshopToolPickup : MonoBehaviour
 {
+    public enum PickupKind { WorkshopTool, Flashlight }
+    [SerializeField] PickupKind kind;
     [SerializeField] PlayerInventory inventory;
     [SerializeField] Transform interactionPoint;
     [SerializeField] Collider aimTarget;
@@ -18,7 +20,8 @@ public sealed class WorkshopToolPickup : MonoBehaviour
 
     public bool CanInteract()
     {
-        if (collected || inventory == null || inventory.HasWorkshopTool
+        if (collected || inventory == null
+            || (kind == PickupKind.Flashlight ? inventory.HasFlashlight : inventory.HasWorkshopTool)
             || interactionPoint == null || Time.timeScale <= 0
             || (notePage != null && notePage.activeSelf))
             return false;
@@ -41,7 +44,10 @@ public sealed class WorkshopToolPickup : MonoBehaviour
 
     public bool TryCollectFromPlayer()
     {
-        if (!CanInteract() || !inventory.TryCollectWorkshopTool()) return false;
+        if (!CanInteract()) return false;
+        bool added = kind == PickupKind.Flashlight
+            ? inventory.TryCollectFlashlight() : inventory.TryCollectWorkshopTool();
+        if (!added) return false;
         collected = true;
         if (prompt != null) prompt.SetActive(false);
         foreach (var visual in toolRenderers)

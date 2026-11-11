@@ -4,6 +4,14 @@ using UnityEngine;
 public sealed class PlayerInventory : MonoBehaviour
 {
     public bool HasWorkshopTool { get; private set; }
+    public bool HasFlashlight { get; private set; }
+
+    public bool TryCollectFlashlight()
+    {
+        if (HasFlashlight) return false;
+        HasFlashlight = true;
+        return true;
+    }
 
     public bool TryCollectWorkshopTool()
     {

@@ -143,6 +143,24 @@ se generan localmente y no forman parte del repositorio.
 
 ## Caserio y primera casa
 
+### Linterna y ampliacion hacia el este
+
+La linterna se encuentra sobre la mesa de `Casa_del_Vecino`, la casa a la
+izquierda de la principal. Apunta con el punto central y pulsa E para recogerla.
+F permite sacarla/encenderla y apagarla/guardarla, en ambas vistas. No se puede
+usar antes de recogerla ni recoger dos veces; no consume bateria por ahora.
+Tras 18-32 segundos de uso puede sufrir un apagon completo de 0.8-1.3 segundos
+y recuperarse suavemente. La intensidad nominal del haz es 52.
+El modelo utiliza geometria y materiales propios, con animacion de sacar y guardar.
+
+`Ampliacion_Este` extiende el terreno 50 metros, con un sendero curvo de unos
+130 metros, bosque, rocas, tres faroles, una casa reutilizada y un porton
+provisional. Este porton reserva el lugar de una futura salida: aun no tiene
+interaccion ni final de partida. El sendero parte hacia el sur desde el taller.
+La iluminacion ambiental, niebla y vineta se ajustaron para distinguir mejor
+el terreno sin perder el ambiente nocturno. Las luces adicionales con sombras
+usan resoluciones limitadas para no saturar el atlas.
+
 SampleScene incluye dos terrenos conectados y un camino de tierra hasta un taller
 provisional. Cuatro faroles de madera con colisiones guian el recorrido.
 En el dormitorio, acercate a la nota del escritorio y pulsa E para leerla;
@@ -157,6 +175,43 @@ El cuerpo mantiene Caveat y las indicaciones de teclas conservan su fuente legib
 Los creditos estan en las carpetas Iluminacion/KhronosLantern y NotaDormitorio,
 dentro de Assets/FearMansion. La mochila y los pasos requieren los paquetes
 Free Scavenger y Starter Assets descritos arriba.
+
+## Audio narrativo y audifonos
+
+Dark Wind (tec_studio, CC0) forma un fondo estereo suave. Baja al 22% en
+interiores y reduce su nivel durante los eventos de tension. Dos canales
+realizan un fundido de cuatro segundos al repetir el archivo, sin corte brusco.
+El componente es HorrorWindAmbience en Sonido_Narrativo/Viento_Caserio.
+
+Seis focos LED domesticos de Poly Haven sustituyen o completan los puntos de luz
+de las tres casas iluminadas. Incluyen roseta, cable y portalamparas; usan
+materiales URP de 1K y emision limitada al globo. El foco del bano conserva
+el parpadeo, ahora espaciado entre 17 y 29 segundos.
+
+`Sonido_Narrativo` organiza la nueva capa de SampleScene:
+
+- Piano al descubrir el cuerpo cubierto, una vez por partida.
+- Voces en el bano al cerrar por primera vez la nota del dormitorio. Esperan
+  al menos cinco segundos y respetan la pausa del efecto musical anterior.
+- Fallo electrico sincronizado con la lampara del banco del taller, audible de
+  cerca y con un intervalo minimo de 23 segundos entre sonidos.
+- Crujido y movimiento leve de la puerta de la casa del extremo al entrar
+  y darle la espalda, una vez por partida.
+- Cuerdas graves al alcanzar la curva del camino este, una vez por partida.
+- Seis variantes de pisadas en hojas: ocasionalmente una pisada extra queda
+  detras del jugador cuando se detiene tras caminar en el exterior. Pausa de
+  40–65 segundos y maximo cuatro apariciones por partida.
+
+Las fuentes del entorno son mono con posicion 3D, caida de volumen por distancia
+y sin Doppler. Voces, puerta y electricidad usan un filtro para amortiguar el
+sonido tras paredes. Los dos acentos musicales conservan su estereo en 2D.
+Los nuevos eventos respetan las notas abiertas y la aparicion del taller;
+no sustituyen sus efectos anteriores. Esto usa audio espacial estandar de Unity,
+sin un complemento HRTF.
+
+Los originales, conversiones WAV y creditos CC0 estan en `Assets/Audio/Horror`.
+Las zonas interiores excluidas para las pisadas se ajustan en el componente
+`ForestFollowingSteps` si se mueven o agregan casas.
 
 ## Practicas de las semanas 9 y 10
 

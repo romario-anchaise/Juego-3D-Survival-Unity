@@ -10,6 +10,7 @@ public class OldBulbFlicker : MonoBehaviour
     [Range(0, 1)] public float dimMultiplier = .03f;
     public int patternSeed = 17;
     public Renderer bulbRenderer;
+    public UnityEngine.Events.UnityEvent onFlicker = new UnityEngine.Events.UnityEvent();
 
     Light bulb;
     Coroutine flicker;
@@ -42,6 +43,7 @@ public class OldBulbFlicker : MonoBehaviour
         yield return new WaitForSeconds(1.5f + (float)random.NextDouble());
         while (true)
         {
+            onFlicker?.Invoke();
             bulb.intensity = baseIntensity * dimMultiplier;
             yield return new WaitForSeconds(.22f + (float)random.NextDouble() * .18f);
             bulb.intensity = baseIntensity;
