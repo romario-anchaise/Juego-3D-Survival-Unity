@@ -6,7 +6,7 @@ en la escena (recortes, fundidos, remuestreo a 48 kHz y mono para fuentes 3D).
 
 | Audio | Autor | Fuente |
 | --- | --- | --- |
-| Dark Wind.wav | tec_studio | https://freesound.org/people/tec_studio/sounds/440962/ |
+| Horror Atmosphere, Post Apocalyptic Wastelands loop | SubspaceAudio / Juhani Junkala | https://opengameart.org/node/79273 |
 | abyss.ogg y piano_sting.mp3 | congusbongus | https://opengameart.org/content/string-and-piano-horror-stings |
 | Four voices whispering 6 w/echo | geoneo0 | https://freesound.org/people/geoneo0/sounds/193818/ |
 | Lights Flicker On | mmaruska | https://freesound.org/people/mmaruska/sounds/232447/ |
@@ -22,3 +22,5 @@ como MP3. Piano_Descubrimiento.wav es su conversión a PCM.
 La escena mantiene los efectos de la aparición del taller y los pasos del porche
 que ya existían. La nueva capa usa posiciones 3D, atenuación y filtrado tras
 obstáculos; no requiere un complemento HRTF.
+
+Evil Laugh MUAHAHA.wav — WannyManny, CC0. Fuente: https://freesound.org/people/WannyManny/sounds/626796/

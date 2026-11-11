@@ -178,10 +178,13 @@ Free Scavenger y Starter Assets descritos arriba.
 
 ## Audio narrativo y audifonos
 
-Dark Wind (tec_studio, CC0) forma un fondo estereo suave. Baja al 22% en
-interiores y reduce su nivel durante los eventos de tension. Dos canales
-realizan un fundido de cuatro segundos al repetir el archivo, sin corte brusco.
-El componente es HorrorWindAmbience en Sonido_Narrativo/Viento_Caserio.
+Post Apocalyptic Wastelands (SubspaceAudio / Juhani Junkala, CC0) sustituye el
+viento suave por una atmosfera oscura. Su nivel es bajo en exteriores, cae al
+18% dentro de casas y se atenúa durante el encuentro del taller. Se transmite
+en streaming y se repite con un fundido de cuatro segundos.
+El golpe breve conservado en Tension_Aparicion suena al primer instante en que
+el jugador mira al enemigo. Los créditos y la licencia están en
+`Assets/Audio/Horror/CREDITOS.md`.
 
 Seis focos LED domesticos de Poly Haven sustituyen o completan los puntos de luz
 de las tres casas iluminadas. Incluyen roseta, cable y portalamparas; usan
@@ -212,3 +215,9 @@ sin un complemento HRTF.
 Los originales, conversiones WAV y creditos CC0 estan en `Assets/Audio/Horror`.
 Las zonas interiores excluidas para las pisadas se ajustan en el componente
 `ForestFollowingSteps` si se mueven o agregan casas.
+
+## Senalizacion rural
+Little Wood Signpost, GetDeadEntertainment (CGTrader), modelo OBJ y texturas 1K.
+Fuente: https://www.cgtrader.com/free-3d-models/exterior/street-exterior/little-wood-signpost
+Tres avisos con colisiones situados fuera del sendero; las puntas indican el avance hacia la casa del extremo y el porton.
+
