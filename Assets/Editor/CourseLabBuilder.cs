@@ -15,7 +15,7 @@ using StarterAssets;
 public static class CourseLabBuilder
 {
     const string Root="Assets/Practicas_S09_S10";
-    const string Evidence="Entregas/Semanas9_10/Evidencias";
+    const string Evidence="Documentacion/Practicas_3D_e_Iluminacion/Evidencias";
     static string Main="Assets/Scenes/SampleScene.unity";
     [MenuItem("Tools/Practicas/Completar semanas 9 y 10 %#&F12")]
     public static void Build()
@@ -32,7 +32,7 @@ public static class CourseLabBuilder
         EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(Main,true),new EditorBuildSettingsScene(Root+"/Escenas/S09_Orientacion.unity",true),new EditorBuildSettingsScene(Root+"/Escenas/S09_Laberinto_Imposible.unity",true),new EditorBuildSettingsScene(Root+"/Escenas/S10_Habitacion_Emocional.unity",true)};
         AssetDatabase.SaveAssets();
         File.WriteAllText("Logs/Practicas_Build.txt","OK: terreno con dos capas; controlador propio; dos camaras; trigger; composer; luces agrupadas; tres escenas didacticas y cinco perfiles; evidencias guardadas.");
-        Debug.Log("Practicas S09 y S10 preparadas. Evidencias en Entregas/Semanas9_10. Falta el playtest humano y la entrega al foro.");
+        Debug.Log("Practicas S09 y S10 preparadas. Evidencias en Documentacion/Practicas_3D_e_Iluminacion. Falta el playtest humano y la entrega al foro.");
     }
     static T Component<T>(GameObject owner) where T:UnityEngine.Component { var c=owner.GetComponent<T>();return c!=null?c:owner.AddComponent<T>(); }
     static void Folder(string p){if(AssetDatabase.IsValidFolder(p))return;int k=p.LastIndexOf('/');Folder(p.Substring(0,k));AssetDatabase.CreateFolder(p.Substring(0,k),p.Substring(k+1));}

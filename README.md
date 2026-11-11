@@ -215,7 +215,7 @@ Las zonas interiores excluidas para las pisadas se ajustan en el componente
 
 ## Practicas de las semanas 9 y 10
 
-La guia de entrega y los Journals estan en `Entregas/Semanas9_10/LEEME.md`.
+La guia de entrega y los Journals estan en `Documentacion/Practicas_3D_e_Iluminacion/LEEME.md`.
 El controlador propio esta en `Assets/Scripts/PlayerController3D.cs`.
 Las escenas didacticas y los perfiles de emocion estan en `Assets/Practicas_S09_S10`.
 En Play, F1 abre el selector de escenas. La habitacion usa teclas 1-5 y el
