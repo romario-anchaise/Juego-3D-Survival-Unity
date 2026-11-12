@@ -10,12 +10,15 @@ public sealed class BedroomWarningNote : MonoBehaviour
     [SerializeField] GameObject page;
     [SerializeField, Min(.1f)] float reach = 1.65f;
     [SerializeField] Collider aimTarget;
+    [SerializeField] bool openOnApproach;
+    [SerializeField] Transform approachFurniture;
     [SerializeField] AudioSource porchAudio;
     [SerializeField] AudioClip firstStep;
     [SerializeField] AudioClip secondStep;
     bool footstepsTriggered;
     [SerializeField] UnityEngine.Events.UnityEvent onFirstClose = new UnityEngine.Events.UnityEvent();
     bool firstCloseTriggered;
+    bool openedDuringApproach;
     static int lastInteractionFrame = -1;
     public UnityEngine.Events.UnityEvent FirstReadClosed => onFirstClose;
     public static bool InputConsumedThisFrame => lastInteractionFrame == Time.frameCount;
@@ -23,6 +26,14 @@ public sealed class BedroomWarningNote : MonoBehaviour
     public bool CanInteract() => InteractionAim.IsTargeted(aimTarget, player, reach);
 
     void Update()
+    {
+        var keyboard = Keyboard.current;
+        bool readPressed = keyboard != null && keyboard.eKey.wasPressedThisFrame;
+        bool closePressed = readPressed || (keyboard != null && keyboard.escapeKey.wasPressedThisFrame);
+        UpdateReading(Cursor.lockState == CursorLockMode.Locked, readPressed, closePressed);
+    }
+
+    void UpdateReading(bool lookEnabled, bool readPressed, bool closePressed)
     {
         if (player == null || prompt == null || page == null)
             return;
@@ -32,17 +43,25 @@ public sealed class BedroomWarningNote : MonoBehaviour
         Vector3 towardPaper = paper - eye;
         bool nearby = towardPaper.sqrMagnitude <= reach * reach
             && !Physics.Linecast(eye, paper, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
-        bool aimed = nearby && Cursor.lockState == CursorLockMode.Locked && CanInteract();
+        bool aimed = nearby && lookEnabled && CanInteract();
+        var view = Camera.main;
+        Vector3 screen = view != null ? view.WorldToViewportPoint(paper) : Vector3.zero;
+        bool approach = openOnApproach && lookEnabled
+            && towardPaper.sqrMagnitude <= reach * reach
+            && screen.z > 0 && screen.x > .08f && screen.x < .92f && screen.y > .08f && screen.y < .92f
+            && VisibleOnApproach(view.transform.position, paper);
+        if (openOnApproach) nearby = approach;
+        if (!nearby) openedDuringApproach = false;
 
-        var keyboard = Keyboard.current;
         if (page.activeSelf)
         {
-            if (!nearby || (keyboard != null &&
-                (keyboard.eKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)))
+            if (!nearby || closePressed)
                 ClosePage();
         }
-        else if (aimed && keyboard != null && keyboard.eKey.wasPressedThisFrame)
+        else if (!InputConsumedThisFrame &&
+            ((aimed && readPressed) || (approach && !openedDuringApproach)))
         {
+            openedDuringApproach = true;
             lastInteractionFrame = Time.frameCount;
             page.SetActive(true);
         }
@@ -50,6 +69,16 @@ public sealed class BedroomWarningNote : MonoBehaviour
         bool showPrompt = aimed && !page.activeSelf;
         if (prompt.activeSelf != showPrompt)
             prompt.SetActive(showPrompt);
+    }
+
+    bool VisibleOnApproach(Vector3 from, Vector3 paper)
+    {
+        Vector3 direction = paper - from;
+        foreach (var hit in Physics.RaycastAll(from, direction.normalized, direction.magnitude,
+            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            if (approachFurniture == null || !hit.transform.IsChildOf(approachFurniture))
+                return false;
+        return true;
     }
 
     void ClosePage()

@@ -78,15 +78,25 @@ La llave inglesa del banco se recoge con E al acercarse y mirar hacia ella,
 en primera o tercera persona. `PlayerInventory.HasWorkshopTool` guarda la
 recogida durante la partida; se reinicia al comenzar de nuevo la escena.
 No puede recogerse a traves de paredes ni duplicarse. Aparece una confirmacion
-breve y la herramienta desaparece del banco. Los golpes provisionales se
-retiraron; su uso en una salida sigue pendiente.
+breve y la herramienta desaparece del banco. Con la llave, vuelve a la reja
+iluminada junto al sendero entre las casas y el taller. Apunta al cierre y
+mantén E durante 2,5 segundos para aflojarlo. Cruza la reja, apunta a la
+puerta del conductor y pulsa E para subir a la camioneta. Tras el arranque,
+conduce en primera persona con WASD y sigue los postes hasta el final del
+sendero. Espacio frena, el ratón permite mirar alrededor y E baja del vehículo
+cuando está detenido. Pulsa R para volver a jugar después de escapar.
+
+El chirrido atrae a El Enraizado desde el lado del taller. Si tiene al jugador
+a la vista, lo sigue. Si pierde el rastro, investiga el último lugar donde lo
+detectó y vuelve al sendero. Si te alcanza, pulsa R para reiniciar la partida.
 
 La nota del taller, parcialmente cubierta por la caja roja, se lee con E.
 El punto central debe apuntar al papel; la herramienta tambien exige apuntado
 directo. Ambos objetivos usan triggers ajustados a su tamano y comprueban
 distancia y obstaculos desde el jugador y la camara. La nota permanece abierta
 sin exigir mantener el punto sobre el papel mientras se lee.
-Su advertencia pide no mirar mucho tiempo al vigilante, no salir y no acercarse.
+La nota cuenta que el vigilante siguió la voz de su hija al bosque y volvió
+cubierto de raíces. Advierte que el chirrido del cierre delata al jugador.
 Su primer cierre dispara `WorkshopWatcherEncounter`: falla la luz del banco,
 se oye un roce espacial y aparece un vigilante inmovil entre los arboles.
 Al verlo se reproduce una textura de tension breve; al apartar la mirada
