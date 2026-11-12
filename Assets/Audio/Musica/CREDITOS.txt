@@ -1,4 +1,0 @@
-A Deep Voice — Myuu
-Archivo proporcionado por el equipo.
-Uso: música de fondo 2D en SampleScene, volumen 0.10, reproducción automática en bucle.
-Verificar las condiciones de la licencia del autor antes de redistribuir el audio.

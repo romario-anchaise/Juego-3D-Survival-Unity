@@ -10,7 +10,6 @@ public sealed class EscapeTruck : MonoBehaviour
     [SerializeField] Transform wheel;
     [SerializeField] Transform[] tires;
     [SerializeField] Light[] headlights;
-    [SerializeField] Transform finish;
 
     const int World = 1;
     const float StartDelay = 1.6f;
@@ -23,15 +22,15 @@ public sealed class EscapeTruck : MonoBehaviour
     Quaternion[] tireRest;
     float heading, speed, yaw, pitch, tireAngle, startedAt, steering;
     bool wasFirstPerson;
-    bool finished;
+    PlayerInventory inventory;
 
     public bool Occupied => driver != null;
     public bool Starting => Occupied && Time.time < startedAt + StartDelay;
-    public bool Finished => finished;
 
     void Awake()
     {
         body = GetComponent<Rigidbody>();
+        inventory = FindFirstObjectByType<PlayerInventory>();
         heading = transform.eulerAngles.y;
         wheelRest = wheel.localRotation;
         tireRest = new Quaternion[tires.Length];
@@ -44,7 +43,7 @@ public sealed class EscapeTruck : MonoBehaviour
 
     public void Board(PlayerInventory inventory)
     {
-        if (Occupied || finished) return;
+        if (Occupied) return;
         driver = inventory.GetComponent<PlayerController3D>();
         if (driver == null) return;
         wasFirstPerson = driver.IsFirstPerson;
@@ -67,7 +66,7 @@ public sealed class EscapeTruck : MonoBehaviour
 
     public void Leave()
     {
-        if (!Occupied || finished || Mathf.Abs(speed) > .35f) return;
+        if (!Occupied || Mathf.Abs(speed) > .35f) return;
         Vector3 side = transform.TransformPoint(-1.7f, 0, .55f);
         if (!Ground(side, out var ground)) return;
         Vector3 feet = ground.point + Vector3.up * .05f;
@@ -83,10 +82,18 @@ public sealed class EscapeTruck : MonoBehaviour
         driver.SetFirstPerson(wasFirstPerson);
         driver = null;
         speed = 0;
+        foreach (var light in headlights) light.enabled = false;
     }
 
     void Update()
     {
+        if (Time.timeScale <= 0 || Cursor.lockState != CursorLockMode.Locked) return;
+        var keys = Keyboard.current;
+        if (keys != null && keys.eKey.wasPressedThisFrame && !BedroomWarningNote.InputConsumedThisFrame)
+        {
+            if (Occupied) Leave();
+            else if (inventory != null && CanBoard(inventory)) Board(inventory);
+        }
         if (!Occupied || Cursor.lockState != CursorLockMode.Locked || Mouse.current == null) return;
         Vector2 look = Mouse.current.delta.ReadValue() * .11f;
         yaw = Mathf.Clamp(yaw + look.x, -100f, 100f);
@@ -96,7 +103,7 @@ public sealed class EscapeTruck : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!Occupied || finished) return;
+        if (!Occupied) return;
         foreach (var light in headlights) light.enabled = !Starting;
         var keys = Keyboard.current;
         bool control = !Starting && keys != null && Cursor.lockState == CursorLockMode.Locked;
@@ -144,7 +151,6 @@ public sealed class EscapeTruck : MonoBehaviour
         tireAngle += speed * step / .36f * Mathf.Rad2Deg;
         for (int i = 0; i < tires.Length; i++)
             tires[i].localRotation = tireRest[i] * Quaternion.AngleAxis(tireAngle, Vector3.right);
-        finished = next.z >= finish.position.z && Mathf.Abs(next.x - finish.position.x) <= 3.3f;
     }
 
     bool Ground(Vector3 point, out RaycastHit hit)

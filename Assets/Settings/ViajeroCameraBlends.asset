@@ -14,16 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBlenderSettings
   CustomBlends:
   - From: '**ANY CAMERA**'
-    To: Camara_asiento_conductor
-    Blend:
-      Style: 0
-      Time: 0
-  - From: Camara_asiento_conductor
-    To: '**ANY CAMERA**'
-    Blend:
-      Style: 0
-      Time: 0
-  - From: '**ANY CAMERA**'
     To: Camara_PrimeraPersona
     Blend:
       Style: 0
