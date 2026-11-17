@@ -72,11 +72,13 @@ public class PlayerController3D : MonoBehaviour
 
     void Start()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
         if (lockPointerOnStart)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+#endif
     }
 
     void Update()
