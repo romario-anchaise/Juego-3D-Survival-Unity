@@ -130,6 +130,9 @@ su sombra. A/D permiten desplazarse lateralmente y S retroceder sin girar el
 cuerpo. Los cambios de vista son inmediatos para evitar atravesar el modelo.
 El cielo usa Night MoonBurst de AllSky Free, con una copia del material ajustada
 para la noche. Se conservan la niebla fria y las luces calidas de la casa.
+De AllSky Free solo se conservan las seis caras de Night MoonBurst y su material
+original, usado por la herramienta de atmosfera. Los otros cielos y demos se
+retiraron; al reimportar el paquete, seleccionar solo esos recursos.
 
 Controles: WASD para caminar, Shift para correr, Espacio para saltar y mouse para
 girar la camara. Escape libera el cursor; un clic en Game lo vuelve a capturar.
@@ -222,6 +225,8 @@ Fuente: https://www.cgtrader.com/free-3d-models/exterior/street-exterior/little-
 Tres avisos con colisiones situados fuera del sendero; las puntas indican el avance hacia la casa del extremo y el porton.
 
 
-## Camioneta conducible
-Se conserva la camioneta de Romario como vehiculo independiente: E junto a la puerta del conductor para subir; WASD para conducir; Espacio para frenar; E estando detenido para bajar. No activa una victoria ni depende de una reja o enemigo. El modelo y sus creditos estan en Assets/FearMansion/Camioneta.
+
+## Version WebGL
+Instalar Web Build Support para Unity 6000.3.22f1. En Unity: Tools > El bosque te llama > Generar version WebGL. La salida se guarda en Builds/WebGL (excluida de Git) y el resultado en Builds/WebGL-result.txt. Se usa gzip con descompresion de respaldo para servidores estaticos.
+Cada cambio del juego requiere generar y publicar otra compilacion para actualizar la version del navegador; git push no publica el juego automaticamente. Para itch.io, comprimir el contenido de Builds/WebGL con index.html en la raiz del ZIP y subirlo como juego HTML. Probar mediante servidor HTTP, no abriendo index.html directamente.
 
