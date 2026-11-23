@@ -19137,6 +19137,8 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!82 &581750208
@@ -21738,6 +21740,8 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!82 &675788293
@@ -31876,6 +31880,8 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!169 &953589908
@@ -32717,6 +32723,14 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 1129449219}
   revealFigureOnAudioCut: 1
+  escapeFootsteps:
+  - {fileID: 8300000, guid: 9cb1fbcbf95700f43932f061398cfebd, type: 3}
+  - {fileID: 8300000, guid: 1e61f14f5b9924c4fa19ef87dbbca483, type: 3}
+  - {fileID: 8300000, guid: 44e6cc26f87bbc343bac953aa15fb03b, type: 3}
+  - {fileID: 8300000, guid: bbd10e32674cbbd4aa3cbb03ad08dfe1, type: 3}
+  - {fileID: 8300000, guid: e530c1c800a7d8d4aa7c7706877155c7, type: 3}
+  - {fileID: 8300000, guid: 813b28606e2c9614c966daaf9514ccd7, type: 3}
+  escapeWarningFont: {fileID: 12800000, guid: ead45e30a9bff8841bb8113548122a07, type: 3}
   figureDelay: 0.85
   figureDuration: 1
 --- !u!82 &969611434
@@ -51022,6 +51036,8 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!169 &1537273053
@@ -54846,6 +54862,8 @@ MonoBehaviour:
   reopenableDoor: 1
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!169 &1629335942
@@ -61280,6 +61298,8 @@ MonoBehaviour:
   reopenableDoor: 0
   windowFigure: {fileID: 0}
   revealFigureOnAudioCut: 0
+  escapeFootsteps: []
+  escapeWarningFont: {fileID: 0}
   figureDelay: 0.8
   figureDuration: 0.65
 --- !u!169 &1824677637

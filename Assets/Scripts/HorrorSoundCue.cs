@@ -26,6 +26,8 @@ public sealed class HorrorSoundCue : MonoBehaviour
     public bool reopenableDoor;
     public GameObject windowFigure;
     public bool revealFigureOnAudioCut;
+    public AudioClip[] escapeFootsteps;
+    public Font escapeWarningFont;
     [Min(0)] public float figureDelay = 0.8f;
     [Min(0)] public float figureDuration = 0.65f;
     public int TriggerCount { get; private set; }
@@ -39,6 +41,11 @@ public sealed class HorrorSoundCue : MonoBehaviour
     float nextAllowed;
     bool doorClosed;
     Quaternion openDoorRotation;
+    bool reopenedByPlayer;
+    bool escapeArmed;
+    float warningUntil;
+    Vector3 previousEscapePosition;
+    GUIStyle escapeWarningStyle;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ResetSession() => foregroundUntil = 0;
@@ -63,6 +70,7 @@ public sealed class HorrorSoundCue : MonoBehaviour
 
     void Update()
     {
+        UpdateEscape();
         if (CanReopenDoor() && Keyboard.current?.eKey.wasPressedThisFrame == true
             && !BedroomWarningNote.InputConsumedThisFrame)
         {
@@ -94,9 +102,32 @@ public sealed class HorrorSoundCue : MonoBehaviour
 
     void OnGUI()
     {
+        if (Time.time < warningUntil && !IsBusy(encounter, readingPages))
+            DrawEscapeWarning();
         if (!CanReopenDoor()) return;
         GUI.Box(new Rect(Screen.width * .5f - 80, Screen.height * .5f + 24, 160, 28),
             "[E] Abrir puerta");
+    }
+
+    void DrawEscapeWarning()
+    {
+        const string message = "¡TE ENCONTRÓ!";
+        escapeWarningStyle ??= new GUIStyle(GUI.skin.label)
+        {
+            font = escapeWarningFont,
+            fontSize = 24,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft
+        };
+        escapeWarningStyle.normal.textColor = new Color(1f, .65f, .57f);
+        float width = Mathf.Clamp(escapeWarningStyle.CalcSize(new GUIContent(message)).x + 48, 238, 390);
+        Color previousColor = GUI.color;
+        GUI.color = new Color(.07f, .035f, .042f, .94f);
+        GUI.DrawTexture(new Rect(24, 24, width, 48), Texture2D.whiteTexture);
+        GUI.color = new Color(.78f, .15f, .16f);
+        GUI.DrawTexture(new Rect(24, 24, 3, 48), Texture2D.whiteTexture);
+        GUI.color = previousColor;
+        GUI.Label(new Rect(42, 24, width - 28, 48), message, escapeWarningStyle);
     }
 
     IEnumerator TurnDoor(Quaternion destination)
@@ -115,7 +146,41 @@ public sealed class HorrorSoundCue : MonoBehaviour
     IEnumerator ReopenDoor()
     {
         yield return TurnDoor(openDoorRotation);
+        reopenedByPlayer = true;
         routine = null;
+    }
+
+    void UpdateEscape()
+    {
+        if (!escapeArmed || player == null || playAfter == null || playAfter.movingDoor == null) return;
+        var hinge = playAfter.movingDoor;
+        var house = hinge.parent;
+        Vector3 position = house.InverseTransformPoint(player.position);
+        float threshold = hinge.localPosition.z - .18f;
+        Vector3 previous = previousEscapePosition;
+        previousEscapePosition = position;
+
+        if (!playAfter.reopenedByPlayer || previous.z <= threshold || position.z > threshold) return;
+        float crossingX = Mathf.Lerp(previous.x, position.x,
+            (previous.z - threshold) / (previous.z - position.z));
+        if (crossingX < hinge.localPosition.x - .15f || crossingX > hinge.localPosition.x + 1.5f) return;
+
+        escapeArmed = false;
+        StartCoroutine(PlayEscapeSteps(house.forward));
+    }
+
+    IEnumerator PlayEscapeSteps(Vector3 inward)
+    {
+        const int count = 13;
+        foregroundUntil = Mathf.Max(foregroundUntil, Time.time + 4.4f);
+        for (int step = 0; step < count; step++)
+        {
+            var clip = escapeFootsteps[step % escapeFootsteps.Length];
+            if (clip != null)
+                AudioSource.PlayClipAtPoint(clip, player.position + inward * Mathf.Lerp(2.7f, 1.4f, step / 12f)
+                    + Vector3.up * .2f, .78f);
+            yield return new WaitForSeconds(Mathf.Lerp(.30f, .22f, step / 12f));
+        }
     }
 
     bool IsVisible()
@@ -203,6 +268,13 @@ public sealed class HorrorSoundCue : MonoBehaviour
         if (revealOnCut)
         {
             windowFigure.SetActive(true);
+            if (escapeFootsteps != null && escapeFootsteps.Length > 0 && playAfter != null
+                && playAfter.movingDoor != null && playAfter.movingDoor.parent != null)
+            {
+                warningUntil = Time.time + 2f;
+                previousEscapePosition = playAfter.movingDoor.parent.InverseTransformPoint(player.position);
+                escapeArmed = true;
+            }
             yield return new WaitForSeconds(figureDuration);
         }
         if (windowFigure != null) windowFigure.SetActive(false);
@@ -212,6 +284,8 @@ public sealed class HorrorSoundCue : MonoBehaviour
     void OnDisable()
     {
         if (windowFigure != null) windowFigure.SetActive(false);
+        escapeArmed = false;
+        warningUntil = 0;
         StopAllCoroutines();
         if (source != null) source.Stop();
         routine = null;
