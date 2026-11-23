@@ -8,7 +8,7 @@ Shader "Survival/Horror/BloodWall"
         _Opacity ("Opacidad", Range(0,1)) = 0.94
         _Wetness ("Brillo humedo", Range(0,1)) = 0.45
         _Drips ("Chorretones", Range(0,1)) = 1
-        [Toggle] _WarningMessage ("Mensaje FUERA DE AQUÍ", Float) = 0
+        [Enum(Ninguno,0,Fuera de aqui,1,Siempre te observa,2)] _WarningMessage ("Mensaje de sangre", Float) = 0
         [Enum(Mancha,0,Pentagrama,1,Emblema,2)] _CultSymbol ("Marca del culto", Float) = 0
         [Enum(Original,0,Salpicadura,1,Huella,2,Arrastre,3,Charco,4)] _CrimeShape ("Forma de la mancha", Float) = 0
         _FabColor ("Textura de sangre", 2D) = "white" {}
@@ -123,6 +123,98 @@ Shader "Survival/Horror/BloodWall"
                 mask = max(mask, (1 - smoothstep(.016, .045, StrokeDistance(p, float2(4.96, 6.14), float2(4.94, 6.83)))) * .85);
                 return mask;
             }
+            float WatcherWarningMask(float2 uv, float grain)
+            {
+                float2 p = float2(uv.x * 11.4, (1 - uv.y) * 3.8);
+                p += float2(Noise(p * 9), Noise(p * 7 + 11)) * .14 - .07;
+                float ink = 10;
+                ink = min(ink, StrokeDistance(p, float2(1.400,0.530), float2(0.780,0.550)));
+                ink = min(ink, StrokeDistance(p, float2(0.780,0.550), float2(0.600,0.730)));
+                ink = min(ink, StrokeDistance(p, float2(0.600,0.730), float2(0.740,0.950)));
+                ink = min(ink, StrokeDistance(p, float2(0.740,0.950), float2(1.300,1.080)));
+                ink = min(ink, StrokeDistance(p, float2(1.300,1.080), float2(1.430,1.330)));
+                ink = min(ink, StrokeDistance(p, float2(1.430,1.330), float2(1.250,1.500)));
+                ink = min(ink, StrokeDistance(p, float2(1.250,1.500), float2(0.630,1.510)));
+                ink = min(ink, StrokeDistance(p, float2(2.090,0.629), float2(2.060,1.629)));
+                ink = min(ink, StrokeDistance(p, float2(3.490,0.444), float2(2.750,0.474)));
+                ink = min(ink, StrokeDistance(p, float2(2.750,0.474), float2(2.710,1.444)));
+                ink = min(ink, StrokeDistance(p, float2(2.710,1.444), float2(3.510,1.414)));
+                ink = min(ink, StrokeDistance(p, float2(2.750,0.924), float2(3.380,0.904)));
+                ink = min(ink, StrokeDistance(p, float2(3.720,1.505), float2(3.750,0.505)));
+                ink = min(ink, StrokeDistance(p, float2(3.750,0.505), float2(4.170,1.105)));
+                ink = min(ink, StrokeDistance(p, float2(4.170,1.105), float2(4.560,0.505)));
+                ink = min(ink, StrokeDistance(p, float2(4.560,0.505), float2(4.610,1.505)));
+                ink = min(ink, StrokeDistance(p, float2(4.810,1.638), float2(4.810,0.658)));
+                ink = min(ink, StrokeDistance(p, float2(4.810,0.658), float2(5.400,0.638)));
+                ink = min(ink, StrokeDistance(p, float2(5.400,0.638), float2(5.610,0.818)));
+                ink = min(ink, StrokeDistance(p, float2(5.610,0.818), float2(5.550,1.028)));
+                ink = min(ink, StrokeDistance(p, float2(5.550,1.028), float2(5.350,1.138)));
+                ink = min(ink, StrokeDistance(p, float2(5.350,1.138), float2(4.810,1.138)));
+                ink = min(ink, StrokeDistance(p, float2(5.850,1.463), float2(5.850,0.483)));
+                ink = min(ink, StrokeDistance(p, float2(5.850,0.483), float2(6.440,0.463)));
+                ink = min(ink, StrokeDistance(p, float2(6.440,0.463), float2(6.650,0.643)));
+                ink = min(ink, StrokeDistance(p, float2(6.650,0.643), float2(6.590,0.853)));
+                ink = min(ink, StrokeDistance(p, float2(6.590,0.853), float2(6.390,0.963)));
+                ink = min(ink, StrokeDistance(p, float2(6.390,0.963), float2(5.850,0.963)));
+                ink = min(ink, StrokeDistance(p, float2(6.210,0.963), float2(6.670,1.463)));
+                ink = min(ink, StrokeDistance(p, float2(7.650,0.481), float2(6.910,0.511)));
+                ink = min(ink, StrokeDistance(p, float2(6.910,0.511), float2(6.870,1.481)));
+                ink = min(ink, StrokeDistance(p, float2(6.870,1.481), float2(7.670,1.451)));
+                ink = min(ink, StrokeDistance(p, float2(6.910,0.961), float2(7.540,0.941)));
+                ink = min(ink, StrokeDistance(p, float2(8.870,0.514), float2(9.870,0.484)));
+                ink = min(ink, StrokeDistance(p, float2(9.380,0.524), float2(9.360,1.484)));
+                ink = min(ink, StrokeDistance(p, float2(10.770,0.459), float2(10.030,0.489)));
+                ink = min(ink, StrokeDistance(p, float2(10.030,0.489), float2(9.990,1.459)));
+                ink = min(ink, StrokeDistance(p, float2(9.990,1.459), float2(10.790,1.429)));
+                ink = min(ink, StrokeDistance(p, float2(10.030,0.939), float2(10.660,0.919)));
+                ink = min(ink, StrokeDistance(p, float2(2.450,2.020), float2(2.820,2.060)));
+                ink = min(ink, StrokeDistance(p, float2(2.820,2.060), float2(2.990,2.330)));
+                ink = min(ink, StrokeDistance(p, float2(2.990,2.330), float2(2.940,2.780)));
+                ink = min(ink, StrokeDistance(p, float2(2.940,2.780), float2(2.710,2.990)));
+                ink = min(ink, StrokeDistance(p, float2(2.710,2.990), float2(2.340,2.980)));
+                ink = min(ink, StrokeDistance(p, float2(2.340,2.980), float2(2.110,2.750)));
+                ink = min(ink, StrokeDistance(p, float2(2.110,2.750), float2(2.110,2.280)));
+                ink = min(ink, StrokeDistance(p, float2(2.110,2.280), float2(2.260,2.080)));
+                ink = min(ink, StrokeDistance(p, float2(2.260,2.080), float2(2.450,2.020)));
+                ink = min(ink, StrokeDistance(p, float2(3.190,3.099), float2(3.190,2.119)));
+                ink = min(ink, StrokeDistance(p, float2(3.190,2.119), float2(3.700,2.099)));
+                ink = min(ink, StrokeDistance(p, float2(3.700,2.099), float2(3.930,2.269)));
+                ink = min(ink, StrokeDistance(p, float2(3.930,2.269), float2(3.830,2.479)));
+                ink = min(ink, StrokeDistance(p, float2(3.830,2.479), float2(3.610,2.559)));
+                ink = min(ink, StrokeDistance(p, float2(3.610,2.559), float2(3.190,2.559)));
+                ink = min(ink, StrokeDistance(p, float2(3.610,2.559), float2(3.980,2.679)));
+                ink = min(ink, StrokeDistance(p, float2(3.980,2.679), float2(3.990,2.909)));
+                ink = min(ink, StrokeDistance(p, float2(3.990,2.909), float2(3.780,3.089)));
+                ink = min(ink, StrokeDistance(p, float2(3.780,3.089), float2(3.190,3.099)));
+                ink = min(ink, StrokeDistance(p, float2(4.980,1.914), float2(4.360,1.934)));
+                ink = min(ink, StrokeDistance(p, float2(4.360,1.934), float2(4.180,2.114)));
+                ink = min(ink, StrokeDistance(p, float2(4.180,2.114), float2(4.320,2.334)));
+                ink = min(ink, StrokeDistance(p, float2(4.320,2.334), float2(4.880,2.464)));
+                ink = min(ink, StrokeDistance(p, float2(4.880,2.464), float2(5.010,2.714)));
+                ink = min(ink, StrokeDistance(p, float2(5.010,2.714), float2(4.830,2.884)));
+                ink = min(ink, StrokeDistance(p, float2(4.830,2.884), float2(4.210,2.894)));
+                ink = min(ink, StrokeDistance(p, float2(6.030,1.975), float2(5.290,2.005)));
+                ink = min(ink, StrokeDistance(p, float2(5.290,2.005), float2(5.250,2.975)));
+                ink = min(ink, StrokeDistance(p, float2(5.250,2.975), float2(6.050,2.945)));
+                ink = min(ink, StrokeDistance(p, float2(5.290,2.455), float2(5.920,2.435)));
+                ink = min(ink, StrokeDistance(p, float2(6.310,3.108), float2(6.310,2.128)));
+                ink = min(ink, StrokeDistance(p, float2(6.310,2.128), float2(6.900,2.108)));
+                ink = min(ink, StrokeDistance(p, float2(6.900,2.108), float2(7.110,2.288)));
+                ink = min(ink, StrokeDistance(p, float2(7.110,2.288), float2(7.050,2.498)));
+                ink = min(ink, StrokeDistance(p, float2(7.050,2.498), float2(6.850,2.608)));
+                ink = min(ink, StrokeDistance(p, float2(6.850,2.608), float2(6.310,2.608)));
+                ink = min(ink, StrokeDistance(p, float2(6.670,2.608), float2(7.130,3.108)));
+                ink = min(ink, StrokeDistance(p, float2(7.300,1.933), float2(7.710,2.933)));
+                ink = min(ink, StrokeDistance(p, float2(7.710,2.933), float2(8.160,1.933)));
+                ink = min(ink, StrokeDistance(p, float2(8.320,2.951), float2(8.770,1.951)));
+                ink = min(ink, StrokeDistance(p, float2(8.770,1.951), float2(9.250,2.951)));
+                ink = min(ink, StrokeDistance(p, float2(8.530,2.551), float2(9.020,2.541)));
+                float mask = 1 - smoothstep(.035, .10, ink + (grain - .5) * .06);
+                float drip = min(StrokeDistance(p, float2(.65,1.51),float2(.69,1.87)),
+                    StrokeDistance(p,float2(5.30,2.98),float2(5.27,3.56)));
+                return max(mask, (1 - smoothstep(.012,.043,drip)) * .85);
+            }
+
             float CultMask(float2 uv, float grain)
             {
                 float2 p = (uv - .5) * 2;
@@ -246,7 +338,9 @@ Shader "Survival/Horror/BloodWall"
                 mask=max(mask,speck);
                 if (_CrimeShape > .5)
                     mask=CrimeMask(uv,grain);
-                if (_WarningMessage > .5)
+                if (_WarningMessage > 1.5)
+                    mask=max(WatcherWarningMask(uv,grain),speck);
+                else if (_WarningMessage > .5)
                     mask=max(WarningMask(uv,grain),speck);
                 if (_CultSymbol > .5)
                     mask=CultMask(uv,grain);
