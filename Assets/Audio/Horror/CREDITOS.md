@@ -24,3 +24,8 @@ que ya existían. La nueva capa usa posiciones 3D, atenuación y filtrado tras
 obstáculos; no requiere un complemento HRTF.
 
 Evil Laugh MUAHAHA.wav — WannyManny, CC0. Fuente: https://freesound.org/people/WannyManny/sounds/626796/
+
+Radio_Extremo.wav combina fragmentos de dos grabaciones CC0, mezclados en mono para Unity:
+
+- R18-23-Shortwave Radio Tunes Randomly — craigsmith. https://freesound.org/people/craigsmith/sounds/483329/
+- Cry of fear - Collective — guamorims. https://freesound.org/people/guamorims/sounds/391364/

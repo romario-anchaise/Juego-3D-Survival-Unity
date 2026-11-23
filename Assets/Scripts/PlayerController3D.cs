@@ -242,13 +242,13 @@ public class PlayerController3D : MonoBehaviour
             AudioClip clip = footsteps[Random.Range(0, footsteps.Length)];
 
             if (clip != null)
-                AudioSource.PlayClipAtPoint(clip, transform.position, .15f);
+                AudioSource.PlayClipAtPoint(clip, transform.position, .42f);
         }
     }
 
     void OnLand(AnimationEvent e)
     {
         if (e.animatorClipInfo.weight > .5f && landing != null)
-            AudioSource.PlayClipAtPoint(landing, transform.position, .2f);
+            AudioSource.PlayClipAtPoint(landing, transform.position, .42f);
     }
 }

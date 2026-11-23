@@ -58,13 +58,10 @@ public sealed class HorrorWindAmbience : MonoBehaviour
         if (player != null && indoorAreas != null)
             foreach (var area in indoorAreas)
                 if (area.Contains(player.position + Vector3.up)) { Indoors = true; break; }
-        bool encounterActive = encounter != null
-            && encounter.CurrentPhase != WorkshopWatcherEncounter.Phase.Dormant
-            && encounter.CurrentPhase != WorkshopWatcherEncounter.Phase.Gone;
         float target = outdoorLevel * (Indoors ? indoorMultiplier : 1)
-            * (HorrorSoundCue.ForegroundActive || encounterActive ? .5f : 1);
+            * (HorrorSoundCue.ForegroundActive ? .35f : 1);
         if (Time.timeScale <= 0) target = 0;
-        MixLevel = Mathf.MoveTowards(MixLevel, target, Time.unscaledDeltaTime * outdoorLevel / 2);
+        MixLevel = Mathf.MoveTowards(MixLevel, target, Time.unscaledDeltaTime * 1.5f);
         foreach (var filter in filters)
             filter.cutoffFrequency = Mathf.Lerp(filter.cutoffFrequency,
                 Indoors ? 2800 : 16000, Time.unscaledDeltaTime * 2);
