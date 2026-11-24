@@ -75,6 +75,7 @@ public sealed class HorrorSoundCue : MonoBehaviour
             && !BedroomWarningNote.InputConsumedThisFrame)
         {
             doorClosed = false;
+            reopenedByPlayer = true;
             routine = StartCoroutine(ReopenDoor());
             return;
         }
@@ -146,7 +147,6 @@ public sealed class HorrorSoundCue : MonoBehaviour
     IEnumerator ReopenDoor()
     {
         yield return TurnDoor(openDoorRotation);
-        reopenedByPlayer = true;
         routine = null;
     }
 
