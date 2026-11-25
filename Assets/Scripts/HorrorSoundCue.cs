@@ -80,6 +80,7 @@ public sealed class HorrorSoundCue : MonoBehaviour
             return;
         }
         if (triggerAnchor == null || player == null || routine != null) return;
+        if (oneShot && TriggerCount > 0) return;
         if (playAfter != null && (playAfter.TriggerCount == 0 || playAfter.routine != null || playAfter.source.isPlaying)) return;
         if ((player.position - triggerAnchor.position).sqrMagnitude > triggerRadius * triggerRadius) return;
         if (lookTarget != null && IsVisible() == requireLookAway) return;
