@@ -26,6 +26,7 @@ public sealed class U4NavMeshBenchmark : EditorWindow
     GameObject root;
     NavMeshData data;
     NavMeshDataInstance instance;
+    ProfilerRecorder navigation;
 
     [MenuItem("Tools/QA/U4 NavMesh Benchmark")]
     public static void Open() => GetWindow<U4NavMeshBenchmark>("U4 NavMesh");
@@ -72,7 +73,16 @@ public sealed class U4NavMeshBenchmark : EditorWindow
             actor.transform.position = hit.position;
             agents.Add(actor.AddComponent<NavMeshAgent>());
         }
-        csv.Clear().AppendLine("variant,frame,agents,interval,accepted,rejected,pending,complete,submit_ms");
+        var handles = new List<Unity.Profiling.LowLevel.Unsafe.ProfilerRecorderHandle>();
+        Unity.Profiling.LowLevel.Unsafe.ProfilerRecorderHandle.GetAvailable(handles);
+        foreach (var handle in handles)
+        {
+            var marker = Unity.Profiling.LowLevel.Unsafe.ProfilerRecorderHandle.GetDescription(handle);
+            if (marker.Name != "NavMeshManager") continue;
+            navigation = ProfilerRecorder.StartNew(marker.Category, marker.Name);
+            break;
+        }
+        csv.Clear().AppendLine("variant,frame,agents,interval,accepted,rejected,pending,complete,submit_ms,nav_mesh_manager_ns");
         phase = 0;
         startFrame = Time.frameCount;
         lastFrame = -1;
@@ -134,7 +144,7 @@ public sealed class U4NavMeshBenchmark : EditorWindow
             else if (agent.hasPath && agent.pathStatus == NavMeshPathStatus.PathComplete) complete++;
         }
         csv.AppendLine(FormattableString.Invariant(
-            $"{phase},{sample},{agents.Count},{interval},{accepted},{rejected},{pending},{complete},{submissionMs:F6}"));
+            $"{phase},{sample},{agents.Count},{interval},{accepted},{rejected},{pending},{complete},{submissionMs:F6},{(navigation.Valid && navigation.Count > 0 ? navigation.LastValue : (long?)null)}"));
     }
 
     void PlayModeChanged(PlayModeStateChange state)
@@ -150,6 +160,8 @@ public sealed class U4NavMeshBenchmark : EditorWindow
         EditorApplication.playModeStateChanged -= PlayModeChanged;
         if (root != null) DestroyImmediate(root);
         if (instance.valid) instance.Remove();
+        if (navigation.Valid) navigation.Dispose();
+        navigation = default;
         if (data != null) DestroyImmediate(data);
         agents.Clear();
         root = null;
