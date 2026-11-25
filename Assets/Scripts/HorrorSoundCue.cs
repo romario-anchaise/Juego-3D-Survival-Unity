@@ -111,9 +111,10 @@ public sealed class HorrorSoundCue : MonoBehaviour
             "[E] Abrir puerta");
     }
 
+    static readonly GUIContent EscapeWarningContent = new GUIContent("¡TE ENCONTRÓ!");
+
     void DrawEscapeWarning()
     {
-        const string message = "¡TE ENCONTRÓ!";
         escapeWarningStyle ??= new GUIStyle(GUI.skin.label)
         {
             font = escapeWarningFont,
@@ -122,14 +123,14 @@ public sealed class HorrorSoundCue : MonoBehaviour
             alignment = TextAnchor.MiddleLeft
         };
         escapeWarningStyle.normal.textColor = new Color(1f, .65f, .57f);
-        float width = Mathf.Clamp(escapeWarningStyle.CalcSize(new GUIContent(message)).x + 48, 238, 390);
+        float width = Mathf.Clamp(escapeWarningStyle.CalcSize(EscapeWarningContent).x + 48, 238, 390);
         Color previousColor = GUI.color;
         GUI.color = new Color(.07f, .035f, .042f, .94f);
         GUI.DrawTexture(new Rect(24, 24, width, 48), Texture2D.whiteTexture);
         GUI.color = new Color(.78f, .15f, .16f);
         GUI.DrawTexture(new Rect(24, 24, 3, 48), Texture2D.whiteTexture);
         GUI.color = previousColor;
-        GUI.Label(new Rect(42, 24, width - 28, 48), message, escapeWarningStyle);
+        GUI.Label(new Rect(42, 24, width - 28, 48), EscapeWarningContent, escapeWarningStyle);
     }
 
     IEnumerator TurnDoor(Quaternion destination)
