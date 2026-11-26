@@ -2674,7 +2674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0649aca8f78c2449dffbe5dfa9a5ff, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::TreeCameraClearance
-  treeRoot: {fileID: 1065085318}
+  treeRoot: {fileID: 2143639592}
   clearance: 0.15
 --- !u!1 &62660446 stripped
 GameObject:
@@ -75074,6 +75074,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4980458297042833192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2143639592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1669787209985147473, guid: 158aa8d0b2fe20f48bfb1d24b7e4542e, type: 3}
+  m_PrefabInstance: {fileID: 2143639591}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &415302246483882091
 GameObject:
   m_ObjectHideFlags: 0
