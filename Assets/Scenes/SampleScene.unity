@@ -2624,6 +2624,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2070925441746177671, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 61674430}
+    - targetCorrespondingSourceObject: {fileID: 2070925441746177671, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 61674435}
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
 --- !u!1 &61674429 stripped
 GameObject:
@@ -2659,6 +2662,20 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &61674435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61674429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0649aca8f78c2449dffbe5dfa9a5ff, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::TreeCameraClearance
+  treeRoot: {fileID: 1065085318}
+  clearance: 0.15
 --- !u!1 &62660446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6713478419442833520, guid: 158aa8d0b2fe20f48bfb1d24b7e4542e, type: 3}
